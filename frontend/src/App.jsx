@@ -4,6 +4,7 @@ import SignUp from "./views/SignUp";
 import Home from "./views/Home";
 import { App as AntdApp } from "antd";
 import Dashboard from "./views/Dashboard";
+import ProtectedRoutes from "./ProtectedRoutes";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -21,7 +22,11 @@ const App = () => {
     },
     {
       path: "/dashboard",
-      Component: Dashboard,
+      element: (
+        <ProtectedRoutes>
+          <Dashboard />
+        </ProtectedRoutes>
+      ),
     },
   ]);
   return (
