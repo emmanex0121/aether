@@ -86,6 +86,13 @@ const signUpController = async (req, res) => {
     // save the new user to database
     await user.save();
 
+    // if succefull generate a token for accessing protected routes.
+    const token = jwt.sign(
+      { id: user._id, email: user.email },
+      config.jwtsecret,
+      { expiresIn: "1h" }
+    );
+
     return res.status(201).json({
       responseCode: apiResponseCode.SUCCESS,
       responseMessage: `${email} registered succefully.`,
@@ -96,6 +103,7 @@ const signUpController = async (req, res) => {
         email,
         phone,
         dob,
+        token,
         address: {
           street,
           apt,
