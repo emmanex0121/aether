@@ -3,8 +3,8 @@ import cors from "cors";
 import config from "./config.js";
 import dbConnection from "./db/dbConnection.js";
 import authRouter from "./routes/auth.js";
-import {assetRouter, adminAssetRouter} from "./routes/assetRouter.js";
-import userRouter from "./routes/userRouter.js"
+import { assetRouter, adminAssetRouter } from "./routes/assetRouter.js";
+import userRouter from "./routes/userRouter.js";
 
 const app = express();
 

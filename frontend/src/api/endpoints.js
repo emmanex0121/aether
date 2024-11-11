@@ -4,6 +4,7 @@ export const endpoints = {
   auth: {
     signup: "auth/signup",
     signin: "auth/signin",
+    adminsignin: "auth/admin/signin",
   },
   // del: {
   //   products: "products",

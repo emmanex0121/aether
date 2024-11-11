@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { axiosInstance } from "../api/axiosinstance.config";
 import { endpoints } from "../api/endpoints";
@@ -8,6 +8,7 @@ const useAuth = () => {
   const [loading, setloading] = useState(false);
   const { onNotify } = useNotification();
   const navigate = useNavigate();
+  const location = useLocation();
 
   //   function to call for sign up
   const onAuth = async (request) => {
@@ -17,10 +18,17 @@ const useAuth = () => {
 
     // Define the endpoint based on request parameters
     let endpoint;
-    if (request.firstName || request.lastName) {
-      endpoint = endpoints.auth.signup;
+    // Check if the current route is not "/admin/signin"
+    if (location.pathname !== "/admin/signin") {
+      // Determine endpoint based on the presence of firstName/lastName
+      if (request.firstName || request.lastName) {
+        endpoint = endpoints.auth.signup;
+      } else {
+        endpoint = endpoints.auth.signin;
+      }
     } else {
-      endpoint = endpoints.auth.signin;
+      // If the route is "/admin/signin", set admin-specific endpoint
+      endpoint = endpoints.auth.adminsignin;
     }
     console.log(endpoint); // debugging line
 
@@ -34,17 +42,23 @@ const useAuth = () => {
 
         // collect the data and store them
         console.log(endpoint);
+        localStorage.clear();
         localStorage.setItem("***", response.data?.data?.token);
         localStorage.setItem("firstName", response.data?.data?.firstName);
         localStorage.setItem("lastName", response.data?.data?.lastName);
         localStorage.setItem("email", response.data?.data?.email);
+        localStorage.setItem("userName", response.data?.data?.userName);
         localStorage.setItem("phone", response.data?.data?.phone);
 
         // upon completion
         setloading(false);
 
         setTimeout(() => {
-          return navigate("/dashboard");
+          if (location.pathname === "/admin/signin") {
+            return navigate("/admin/dashboard");
+          } else {
+            return navigate("/dashboard");
+          }
         }, 2000);
       } else {
         console.log(endpoint);

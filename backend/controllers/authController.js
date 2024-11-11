@@ -1,6 +1,7 @@
 import Joi from "joi";
 import { apiResponseCode } from "../helper.js";
 import User from "../models/User.js";
+import Admin from "../models/Admin.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import config from "../config.js";
@@ -126,14 +127,14 @@ const signUpController = async (req, res) => {
 
 // Signin Controller logic
 const signInController = async (req, res) => {
-  const signInSchema = Joi.object({
+  const adminSignInSchema = Joi.object({
     email: Joi.string().email().allow(null),
     userName: Joi.string().allow(null),
     password: Joi.string().min(8).required(),
   });
 
   try {
-    const { error } = signInSchema.validate(req.body);
+    const { error } = adminSignInSchema.validate(req.body);
     if (error) {
       return res.status(400).json({
         responseCode: apiResponseCode.BAD_REQUEST,
@@ -214,4 +215,153 @@ const signInController = async (req, res) => {
     });
   }
 };
-export { signInController, signUpController };
+
+const adminSignInController = async (req, res) => {
+  const signInSchema = Joi.object({
+    email: Joi.string().email().required(),
+    password: Joi.string().min(8).required(),
+  });
+
+  try {
+    const { error } = signInSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({
+        responseCode: apiResponseCode.BAD_REQUEST,
+        responseMessage: error.details[0].message,
+        data: null,
+      });
+    }
+
+    const { email, password } = req.body;
+    let adminUser = await Admin.findOne({ email });
+    if (!adminUser) {
+      return res.status(401).json({
+        responseCode: apiResponseCode.UNAUTHORIZED,
+        responseMessage: "Invalid Credentials.",
+        data: null,
+      });
+    }
+
+    // compare the password with the stored password
+    const isPasswordMatch = await bcrypt.compare(password, adminUser.password);
+    if (!isPasswordMatch) {
+      return res.status(401).json({
+        responseCode: apiResponseCode.UNAUTHORIZED,
+        responseMessage: "Invalid Credentials.",
+        data: null,
+      });
+    }
+
+    // if succefull generate a token for accessing protected routes.
+    const token = jwt.sign(
+      { id: adminUser._id, email: adminUser.email },
+      config.jwtsecret,
+      { expiresIn: "1hr" }
+    );
+
+    return res.status(200).json({
+      responseCode: apiResponseCode.SUCCESS,
+      responseMessage: "Signin Success.",
+      data: {
+        userName: adminUser.userName,
+        email: adminUser.email,
+        token,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      responseCode: apiResponseCode.INTERNAL_SERVER_ERR,
+      responseMessage: "Internal Server Error.",
+      data: null,
+    });
+  }
+};
+
+// Admin signup controllrer
+const adminSignUpController = async (req, res) => {
+  const adminSignUpSchema = Joi.object({
+    email: Joi.string().email().required(),
+    userName: Joi.string().required(),
+    password: Joi.string().min(8).required(),
+  });
+
+  try {
+    // validating the request
+    const { error } = adminSignUpSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({
+        responseCode: apiResponseCode.BAD_REQUEST,
+        responseMessage: error.details[0].message,
+        data: null,
+      });
+    }
+
+    const { email, userName, password } = req.body;
+    let adminUser = await Admin.findOne({ email: email });
+    if (adminUser) {
+      return res.status(409).json({
+        responseCode: apiResponseCode.BAD_REQUEST,
+        responseMessage: `User ${email} already exist`,
+        data: null,
+      });
+    }
+
+    adminUser = await Admin.findOne({ userName: userName });
+    if (adminUser) {
+      return res.status(409).json({
+        responseCode: apiResponseCode.BAD_REQUEST,
+        responseMessage: `User ${userName} already exist`,
+        data: null,
+      });
+    }
+
+    const hashpassword = await bcrypt.hash(password, 5);
+    if (!hashpassword) {
+      console.error("Encryption error. Something Went wrong");
+      return res.status(500).json({
+        responseCode: apiResponseCode.INTERNAL_SERVER_ERR,
+        responseMessage: "Internal Server Error.",
+        data: null,
+      });
+    }
+
+    adminUser = new Admin({
+      userName,
+      email,
+      password: hashpassword,
+    });
+
+    await adminUser.save();
+
+    const token = jwt.sign(
+      { id: adminUser._id, email: adminUser.email },
+      config.jwtsecret,
+      { expiresIn: "1hr" }
+    );
+
+    return res.status(201).json({
+      responseCode: apiResponseCode.SUCCESS,
+      responseMessage: "Admin created successfully.",
+      data: {
+        userName,
+        email,
+        token,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      responseCode: apiResponseCode.INTERNAL_SERVER_ERR,
+      responseMessage: "Internal server error.",
+      data: null,
+    });
+  }
+};
+
+export {
+  signInController,
+  signUpController,
+  adminSignInController,
+  adminSignUpController,
+};

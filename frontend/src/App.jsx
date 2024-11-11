@@ -5,6 +5,9 @@ import Home from "./views/Home";
 import { App as AntdApp } from "antd";
 import Dashboard from "./views/Dashboard";
 import ProtectedRoutes from "./ProtectedRoutes";
+import AdminProtectedRoutes from "./views/AdminProtectedRoutes";
+import AdminDashboard from "./views/AdminDashboard";
+import AdminSignIn from "./views/AdminSignIn";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -26,6 +29,18 @@ const App = () => {
         <ProtectedRoutes>
           <Dashboard />
         </ProtectedRoutes>
+      ),
+    },
+    {
+      path: "/admin/signin",
+      Component: AdminSignIn,
+    },
+    {
+      path: "/admin/dashboard",
+      element: (
+        <AdminProtectedRoutes>
+          <AdminDashboard />
+        </AdminProtectedRoutes>
       ),
     },
   ]);
