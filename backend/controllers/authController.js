@@ -55,7 +55,7 @@ const signUpController = async (req, res) => {
     // validating if user already exists
     let user = await User.findOne({ email });
     if (user) {
-      return res.status(400).json({
+      return res.status(409).json({
         responseCode: apiResponseCode.BAD_REQUEST,
         responseMessage: `User ${email} already exist.`,
         data: null,

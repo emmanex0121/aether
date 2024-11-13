@@ -1,5 +1,78 @@
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons+Outlined");
+@import url("https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=Quicksand:wght@300..700&display=swap");
 
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+*,
+body {
+  font-family: "Bai Jamjuree", sans-serif;
+}
+/* .sidebar {
+  transition: all;
+  transition-duration: 300;
+} */
+
+/* Carousel button */
+.carousel-btn {
+  position: absolute;
+  /* z-index: 1000; */
+}
+.carousel-btn:hover {
+  background-color: brown;
+}
+
+/* Exit button inside the sidebar */
+.exit-btn {
+  font-size: 1.5rem;
+  cursor: pointer;
+  /* border-radius: 0.3rem; */
+
+  /* background-color: red; */
+  padding: 0.1rem 0.3rem;
+}
+.exit-btn:hover,
+.exit-btn:active {
+  background-color: brown;
+}
+.home-logo-text:hover {
+  color: #000;
+}
+.sidebar-item {
+  color: #000;
+  cursor: pointer;
+
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+}
+.sidebar-item:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(155, 59, 59);
+}
+
+.custom-bl {
+  border-left: 2px solid rgb(161, 59, 59);
+  padding-left: 1rem;
+}
+
+/* Sidebar transition for mobile */
+@media (max-width: 640px) {
+  .content-section {
+    margin-left: 0;
+  }
+  .sidebar-hidden {
+    /* display: none; */
+    transform: translateX(-100%);
+  }
+  .sidebar-show {
+    /* display: flex; */
+    transform: translateX(0);
+  }
+}
+.active-item {
+  background-color: brown;
+}

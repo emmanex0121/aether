@@ -5,4 +5,5 @@ export const apiResponseCode = {
   UNAUTHORIZED: "07",
   USER_NOT_FOUND: "05",
   NOT_FOUND: "05",
+  CONFLICT: "09",
 };
