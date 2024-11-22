@@ -1,12 +1,12 @@
 // routes/user.js
 import express from "express";
 import { getUsers } from "../controllers/userController.js";
-import authMiddleWare from "../middlewares/authMiddleWare.js";
+import { adminAuthMiddleWare, authMiddleWare } from "../middlewares/authMiddleWare.js";
 
 const userRouter = express.Router();
 
 // endpoint to get all users
-userRouter.get("/", authMiddleWare, getUsers); // Endpoint to update profile
+userRouter.get("/", adminAuthMiddleWare, getUsers); // Endpoint to update profile
 
 // Endpoint to update profile
 // userRouter.put("/profile", authMiddleware, updateProfile);

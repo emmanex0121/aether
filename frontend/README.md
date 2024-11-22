@@ -8,3 +8,4 @@
 - -D tailwindcss postcss autoprefixer
 - chart.js
 - react-chartjs-2
+- jwt-decode

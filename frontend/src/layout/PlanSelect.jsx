@@ -1,31 +1,33 @@
-import { NavLink } from "react-router-dom";
+// import { NavLink } from "react-router-dom";
 import { Card } from "antd";
 import PlansPopUp from "../ui/PlansPopUp";
 import { useState } from "react";
+// import { GlobalContext } from "../contexts/useGlobalContext";
+// import { endpoints } from "../api/endpoints";
 
 const PlanSelect = () => {
   const [isPopupVisible, setPopupVisible] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(""); // State for selected plan
   const [investment, setInvestment] = useState("");
   const [interest, setInterest] = useState("");
-  const [day, setDay] = useState("");
+  const [days, setDays] = useState("");
 
   const showPopup = (plan) => {
     setSelectedPlan(plan); // Set selected plan name
     setPopupVisible(true);
 
-    if (plan === "Basic") {
+    if (plan === "basic") {
       setInvestment("$250.00 - $999.00");
       setInterest("3");
-      setDay("7");
-    } else if (plan === "Silver") {
+      setDays("7");
+    } else if (plan === "silver") {
       setInvestment("$5,008.00");
       setInterest("128.69");
-      setDay("3");
+      setDays("3");
     } else {
       setInvestment("$10,001.00 - $50,000.00");
       setInterest("3");
-      setDay("7");
+      setDays("7");
     }
   };
 
@@ -34,7 +36,7 @@ const PlanSelect = () => {
     setSelectedPlan(""); // Reset selected plan
     setInvestment(""); // Reset investment value
     setInterest(""); // Reset interest value
-    setDay(""); // Reset day value
+    setDays(""); // Reset day value
   };
 
   return (
@@ -67,7 +69,7 @@ const PlanSelect = () => {
             <button
               name="basic"
               type="primary"
-              onClick={() => showPopup("Basic")}
+              onClick={() => showPopup("basic")}
               className="w-full flex items-center justify-center rounded py-4 text-lg font-bold text-white bg-red-900 hover:text-blue-300 transition duration-300 ease-in-out">
               Invest Now
             </button>
@@ -99,7 +101,7 @@ const PlanSelect = () => {
             <button
               name="silver"
               type="primary"
-              onClick={() => showPopup("Silver")}
+              onClick={() => showPopup("silver")}
               className="w-full flex items-center justify-center rounded py-4 text-lg font-bold text-white bg-red-900 hover:text-blue-300 transition duration-300 ease-in-out">
               Invest Now
             </button>
@@ -132,7 +134,7 @@ const PlanSelect = () => {
             <button
               name="gold"
               type="primary"
-              onClick={() => showPopup("Gold")}
+              onClick={() => showPopup("gold")}
               className="w-full flex items-center justify-center rounded py-4 text-lg font-bold text-white bg-red-900 hover:text-blue-300 transition duration-300 ease-in-out">
               Invest Now
             </button>
@@ -146,7 +148,7 @@ const PlanSelect = () => {
           plan={selectedPlan}
           investment={investment}
           interest={interest}
-          day={day}
+          days={days}
         />
       )}{" "}
     </div>

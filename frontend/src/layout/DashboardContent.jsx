@@ -1,5 +1,6 @@
 import KycRequired from "../ui/KycRequired";
 import { Line } from "react-chartjs-2";
+import { useContext } from "react";
 
 import {
   Chart as ChartJS,
@@ -11,6 +12,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { BalanceContext } from "../contexts/useGlobalContext";
 
 ChartJS.register(
   CategoryScale,
@@ -23,6 +25,8 @@ ChartJS.register(
 );
 
 const DashboardContent = () => {
+  const { balanceTotal } = useContext(BalanceContext);
+
   // Example data for the chart
   const data = {
     labels: ["1AM", "5AM", "9AM", "1PM", "5PM", "9PM"],
@@ -62,11 +66,11 @@ const DashboardContent = () => {
       <div className="flex flex-wrap items-center my-12 gap-x-[13rem] gap-y-4">
         <div className="custom-bl flex flex-col">
           <span className="text-3xl font-bold">Balance </span>
-          <span className="text-xl">$400.25</span>
+          <span className="text-xl">${balanceTotal}</span>
         </div>
         <div className="custom-bl flex flex-col">
-          <span className="text-3xl font-bold">24hr Change / Interest</span>
-          <span className="text-xl">+$400.34</span>
+          <span className="text-3xl font-bold">24hr Change / Investment</span>
+          <span className="text-xl">$5,000 (+$400.34)</span>
         </div>
       </div>
       <div>

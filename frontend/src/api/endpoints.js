@@ -6,13 +6,18 @@ export const endpoints = {
     signin: "auth/signin",
     adminsignin: "auth/admin/signin",
   },
-  // del: {
-  //   products: "products",
-  //   users: "users",
-  // },
-  // add: {
-  //   products: "products/add",
-  //   users: "users/add",
-  //   upload: "products/upload",
-  // },
+  asset: {
+    add: "asset/add",
+    history: "asset/history",
+  },
+  wallet: {
+    history: "wallet",
+    update: "wallet/update",
+  },
+  address: "address",
+  plans: {
+    add: "user/plans/add",
+    history: "user/plans/",
+    // update: "user/plans/update"
+  },
 };

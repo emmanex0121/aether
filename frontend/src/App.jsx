@@ -17,6 +17,9 @@ import Chat from "./layout/Chat";
 import Logout from "./layout/Logout";
 import DashboardContent from "./layout/DashboardContent";
 import PlanSelect from "./layout/PlanSelect";
+import Withdraw from "./layout/Withdraw";
+import Deposit from "./layout/Deposit";
+import GlobalProvider from "./contexts/useGlobalContext";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -37,7 +40,9 @@ const App = () => {
       // Component: Dashboard,
       element: (
         <ProtectedRoutes>
-          <DashboardLayout />
+          <GlobalProvider>
+            <DashboardLayout />
+          </GlobalProvider>
         </ProtectedRoutes>
       ),
       children: [
@@ -48,12 +53,6 @@ const App = () => {
         {
           path: "plans",
           element: <Plans />,
-          // children: [
-          //   {
-          //     path: "select",
-          //     element: <PlanSelect />,
-          //   },
-          // ],
         },
         {
           path: "plans/select", // Make PlanSelect a sibling route of Plans
@@ -66,6 +65,14 @@ const App = () => {
         {
           path: "wallet",
           element: <Wallet />,
+        },
+        {
+          path: "wallet/deposit",
+          element: <Deposit />,
+        },
+        {
+          path: "wallet/withdraw",
+          element: <Withdraw />,
         },
         {
           path: "verification",

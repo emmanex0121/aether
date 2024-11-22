@@ -3,24 +3,115 @@ import { Select, InputNumber } from "antd";
 import useNotification from "../customHooks/useNotification";
 // import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import { BalanceContext, GlobalContext } from "../contexts/useGlobalContext";
+import { endpoints } from "../api/endpoints";
 
-const onChange = (value) => {
-  console.log(`selected ${value}`);
-};
-// const onSearch = (value) => {
-//   console.log("search:", value);
-// };
-
-const PlansPopUp = ({ onClose, plan, investment, interest, day }) => {
+const PlansPopUp = ({ onClose, plan, investment, interest, days }) => {
   const { onNotify } = useNotification();
   const navigate = useNavigate(); // Initialize the navigate hook
+  const [investmentAmount, setInvestmentAmount] = useState("");
+  const [selectedWallet, setSelectedWallet] = useState("usdt");
+  const { balanceUSDT, balanceLTC, balanceBTC } = useContext(BalanceContext);
+  const { putData, postData, currentPlans } = useContext(GlobalContext);
 
-  const onSuccess = () => {
-    onNotify("success", "Successful", "Sucecsully purchases a plan");
-    setTimeout(() => {
-      navigate("/user/plans");
-    }, 2000);
+  const handleSubmit = () => {
+    console.log(currentPlans);
+    // Check if the user already has a plan of the selected wallet type
+    if (currentPlans.includes(plan)) {
+      // If the user already has the same wallet type, notify them
+      onNotify(
+        "error",
+        "Failed",
+        `You already have a ${plan} plan. Please purchase a different plan.`
+      );
+      return;
+    }
+
+    const notifyAndNavigate = () => {
+      onNotify("success", "Successful", "Successfully purchased a plan");
+      setTimeout(() => {
+        navigate("/user/plans");
+      }, 2000);
+    };
+    let walletData = {};
+    if (selectedWallet === "ltc")
+      walletData = { LTC: balanceLTC - investmentAmount };
+    if (selectedWallet === "btc")
+      walletData = { BTC: balanceBTC - investmentAmount };
+    if (selectedWallet === "usdt")
+      walletData = { USDT: balanceUSDT - investmentAmount };
+
+    // console.log("wallet data", walletData);
+
+    const sendRequest = async () => {
+      try {
+        const planData = {
+          initialValue: investmentAmount,
+          selectedPlan: plan,
+        };
+
+        const responseWallet = await putData(
+          endpoints.wallet.update,
+          walletData
+        );
+        const responsePlan = await postData(endpoints.plans.add, planData);
+        console.log(responseWallet, responsePlan);
+      } catch (error) {
+        console.error(error.message);
+        onNotify(
+          "error",
+          "Failed",
+          "Could not process your request. Try again."
+        );
+      }
+    };
+
+    if (plan === "basic") {
+      if (investmentAmount >= 250 && investmentAmount <= 999) {
+        // post function here
+        sendRequest();
+        notifyAndNavigate();
+      } else {
+        onNotify(
+          "error",
+          "Failed",
+          "Investment amount must be between $250 and $999 for Basic plan."
+        );
+        // onClose();
+      }
+    } else if (plan === "silver") {
+      if (investmentAmount === 5008) {
+        sendRequest();
+        notifyAndNavigate();
+      } else {
+        onNotify(
+          "error",
+          "Failed",
+          "Investment amount must be $5008 for Silver plan."
+        );
+        // onClose();
+      }
+    } else if (plan === "gold") {
+      if (investmentAmount >= 10000 && investmentAmount <= 50000) {
+        sendRequest();
+        notifyAndNavigate();
+      } else {
+        onNotify(
+          "error",
+          "Failed",
+          "Investment amount must be between $10,000 and $50,000 for Gold plan."
+        );
+        // onClose();
+      }
+    }
   };
+
+  const onChange = (value) => {
+    console.log(`selected ${value}`);
+    setSelectedWallet(value);
+  };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 px-4">
       <div className="bg-white rounded-lg shadow-lg max-w-md w-full pb-2">
@@ -36,7 +127,7 @@ const PlansPopUp = ({ onClose, plan, investment, interest, day }) => {
           <div className="">
             <div className="text-md mb-2">Investment: {investment}</div>
             <div className="text-md mb-2">Interest: {interest}</div>
-            <div className="text-md mb-4">Every 24 hours for {day} days</div>
+            <div className="text-md mb-4">Every 24 hours for {days} days</div>
           </div>
         </div>
         <div className="px-6 flex flex-col gap-4">
@@ -49,21 +140,21 @@ const PlansPopUp = ({ onClose, plan, investment, interest, day }) => {
                 width: "100%",
               }}
               showSearch
-              defaultValue="deposit"
+              defaultValue="usdt"
               onChange={onChange}
               // onSearch={onSearch}
               options={[
                 {
-                  value: "deposit",
-                  label: "Deposit Wallet - $35,000.00",
+                  value: "usdt",
+                  label: `Deposit Wallet (USDT - TRC20) - $${balanceUSDT}`,
                 },
                 {
-                  value: "BTC",
-                  label: "BITCOIN (BTC)",
+                  value: "btc",
+                  label: `BITCOIN (BTC) - $${balanceBTC}`,
                 },
                 {
-                  value: "LTC",
-                  label: "LITECOIN (LTC)",
+                  value: "ltc",
+                  label: `LITECOIN (LTC) - $${balanceLTC}`,
                 },
               ]}
             />
@@ -75,8 +166,19 @@ const PlansPopUp = ({ onClose, plan, investment, interest, day }) => {
             </p>{" "}
             <InputNumber
               prefix="USD"
+              placeholder="e.g 100"
               style={{
                 width: "100%",
+              }}
+              min={1}
+              value={investmentAmount}
+              onChange={(value) => {
+                // Only set the value if it's a positive number
+                if (value && value > 0) {
+                  setInvestmentAmount(value);
+                } else {
+                  setInvestmentAmount(null); // Clear the input if invalid
+                }
               }}
             />
           </div>
@@ -84,11 +186,12 @@ const PlansPopUp = ({ onClose, plan, investment, interest, day }) => {
           <div className="w-full flex items-center justify-end gap-2">
             <button
               onClick={onClose}
+              aria-label="Close"
               className="text-md font-bold bg-red-900 text-white py-2 px-4">
               Close
             </button>
             <button
-              onClick={onSuccess}
+              onClick={handleSubmit}
               className="text-md font-bold bg-red-900 text-white py-2 px-4">
               OK
             </button>
@@ -110,7 +213,7 @@ PlansPopUp.propTypes = {
   plan: PropTypes.string.isRequired,
   investment: PropTypes.string.isRequired,
   interest: PropTypes.string.isRequired,
-  day: PropTypes.string.isRequired,
+  days: PropTypes.string.isRequired,
 };
 
 export default PlansPopUp;

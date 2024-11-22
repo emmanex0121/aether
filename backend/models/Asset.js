@@ -17,7 +17,7 @@ const assetSchema = new mongoose.Schema(
     },
     volume: {
       type: String,
-      required: true,
+      // required: true,
     },
     orderStatus: {
       type: String,
@@ -28,6 +28,10 @@ const assetSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
+    },
+    walletAddress: {
+      type: String,
+      default: "",
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,

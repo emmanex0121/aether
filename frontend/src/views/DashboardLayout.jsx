@@ -1,8 +1,10 @@
 // import { Card } from "antd";
 import { Outlet, useLocation, NavLink } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import SideBar from "../layout/SideBar";
 import { UserOutlined } from "@ant-design/icons";
+import "../index.css";
+import { BalanceContext } from "../contexts/useGlobalContext";
 
 const DashboardLayout = () => {
   const location = useLocation(); // Get the current location
@@ -10,7 +12,35 @@ const DashboardLayout = () => {
     () => localStorage.getItem("selectedTab") || "DashboardContent" // Load from localStorage or default
   );
   const [sideBarShow, setShowSideBar] = useState(false);
+  // const { fetchData, setData, data } = useContext(GlobalContext);
+  const { balanceTotal } = useContext(BalanceContext);
 
+  // const balanceTotal = localStorage.getItem("balanceTotal");
+  // useEffect(() => {
+  //   const fetchBalance = async () => {
+  //     try {
+  //       if (!balanceTotal) {
+  //         const fetchedData = await fetchData(endpoints.wallet.history);
+  //         console.log(fetchedData.data);
+  //         setData(fetchedData);
+  //         const balanceTotal = sumStringsToTwoDecimals(
+  //           fetchedData.USDT,
+  //           fetchedData.LTC,
+  //           fetchedData.BTC
+  //         );
+  //         localStorage.setItem("balanceTotal", balanceTotal);
+  //         localStorage.setItem("USDT", fetchedData.USDT);
+  //         localStorage.setItem("LTC", fetchedData.LTC);
+  //         localStorage.setItem("BTC", fetchedData.BTC);
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   fetchBalance();
+  // }, []);
+
+  // const balances =
   useEffect(
     () => {
       // Map the current path to a sidebar item (e.g., "/plans" or any nested path like "/plans/plan1" will set "Plans")
@@ -24,6 +54,7 @@ const DashboardLayout = () => {
         "/chat": "Chat",
         "/logout": "Logout",
       };
+      console.log(location.pathname)
       const matchedPath = Object.keys(pathMap).find((path) =>
         location.pathname.startsWith(path)
       );
@@ -72,10 +103,11 @@ const DashboardLayout = () => {
           </div>
         </NavLink>
       </div>
-      <div className=" px-2">
+      <div className="px-2 relative">
         <div className="min-w-20 w-40 fixed">
           <div className="">
             <SideBar
+              balanceTotal={balanceTotal}
               toggleSideBar={toggleSidebar}
               sideBarShow={sideBarShow}
               setShowSideBar={setShowSideBar}

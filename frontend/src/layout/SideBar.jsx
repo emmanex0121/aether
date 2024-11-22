@@ -9,8 +9,11 @@ import {
 import "../index.css";
 import PropTypes from "prop-types";
 import colorLogo from "../assets/colour-no-texts.png";
-
+import DepositButton from "../ui/DepositButton";
+import WithdrawButton from "../ui/WithdrawButton";
+// import { useEffect } from "react";
 const SideBar = ({
+  balanceTotal,
   currentPath,
   toggleSideBar,
   sideBarShow,
@@ -18,6 +21,16 @@ const SideBar = ({
   selected,
   setSelected,
 }) => {
+  // useEffect(() => {
+  //   if (currentPath) {
+  //     const pathStrip = () => {
+  //       const segments = currentPath.split("/");
+  //       return segments[1] || "";
+  //     };
+  //     setSelected(pathStrip);
+  //   }
+  // }, [currentPath, selected, setSelected]);
+
   const handleItemClick = (item) => {
     setSelected(item);
     setShowSideBar(false);
@@ -55,20 +68,16 @@ const SideBar = ({
         <span className="text-2xl font-bold">Aether</span>
       </NavLink>
       <div className="mb-10">
-        <span>Account Balance</span>
-        <div className="flex">
-          <span>35.00 </span> <span> USD</span>
+        <span className="font-medium">Account Balance</span>
+        <div className="flex gap-1">
+          <span>{balanceTotal} </span> <span>USD</span>
         </div>
         <div className="flex">
           <span>15.00 </span> <span> USD (Interest Wallet)</span>
         </div>
-        <div className="flex items-center gap-5">
-          <button className="bg-[#A52A2A] rounded border-2 border-black mt-2 px-5 py-3">
-            Deposit
-          </button>
-          <button className="bg-[#A52A2A] rounded border-2 border-black mt-2 px-5 py-3">
-            Withdraw
-          </button>
+        <div className="flex items-center gap-5 mt-6">
+          <DepositButton />
+          <WithdrawButton />
         </div>
       </div>
       <nav className="flex flex-col gap-4">
@@ -171,6 +180,7 @@ const SideBar = ({
 };
 
 SideBar.propTypes = {
+  balanceTotal: PropTypes.string.isRequired,
   selected: PropTypes.string.isRequired,
   setSelected: PropTypes.func.isRequired,
   sideBarShow: PropTypes.bool,

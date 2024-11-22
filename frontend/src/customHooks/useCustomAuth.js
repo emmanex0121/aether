@@ -57,7 +57,7 @@ const useAuth = () => {
           if (location.pathname === "/admin/signin") {
             return navigate("/admin/dashboard");
           } else {
-            return navigate("/dashboard");
+            return navigate("/user/dashboard");
           }
         }, 2000);
       } else {
