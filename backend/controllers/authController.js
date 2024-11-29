@@ -22,6 +22,7 @@ const signUpController = async (req, res) => {
     state: Joi.string().required(),
     zip: Joi.string().max(5).required(),
     country: Joi.string().required(),
+    honeypot: Joi.string(),
   });
 
   try {
@@ -50,7 +51,18 @@ const signUpController = async (req, res) => {
       state,
       zip,
       country,
+      honeypot,
     } = req.body;
+
+
+    //Honepot testing
+    if (honeypot) {
+      return res.status(400).json({
+        responseCode: apiResponseCode.BAD_REQUEST,
+        responseMessage: "Request Rejected!!!!! WARNING! Bot Detected!",
+        data: null,
+      });
+    }
 
     // validating if user already exists
     let user = await User.findOne({ email });
@@ -198,11 +210,9 @@ const signInController = async (req, res) => {
       data: {
         firstName: user.firstName,
         lastName: user.lastName,
-        // userName: user.userName,
         email: user.email,
         phone: user.phone,
-        // dob: formattedDob,
-        // address: user.address,
+        verificationStatus: user.verificationStatus,
         token,
       },
     });

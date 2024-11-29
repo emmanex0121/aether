@@ -8,7 +8,7 @@ const getWallet = async (req, res) => {
   try {
     // fetch wallets
     const wallets = await Wallet.findOne({ user: req.user.id });
-    console.log("line 11 wallet controller", wallets);
+    // console.log("line 11 wallet controller", wallets);
     if (!wallets) {
       return res.status(400).json({
         responseCode: apiResponseCode.INTERNAL_SERVER_ERR,

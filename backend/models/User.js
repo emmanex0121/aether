@@ -31,6 +31,7 @@ const userSchema = new mongoose.Schema(
       required: true,
       // unique: true,
     },
+
     password: {
       type: String,
       required: true,
@@ -42,6 +43,10 @@ const userSchema = new mongoose.Schema(
       state: { type: String, required: true },
       zip: { type: String, required: true },
       country: { type: String, required: true },
+    },
+    verificationStatus: {
+      type: String,
+      default: "unverified",
     },
   },
   {

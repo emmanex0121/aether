@@ -22,7 +22,7 @@ const authMiddleWare = async (req, res, next) => {
 
     // Find user associated with the token
     let user = await User.findById(decodedToken.id);
-    console.log("Found User", user._id); //debug line
+    console.log("Found User, line 25 Authmiddleware", user._id); //debug line
 
     if (!user) {
       return res.status(404).json({
@@ -65,6 +65,7 @@ const authMiddleWare = async (req, res, next) => {
 const adminAuthMiddleWare = async (req, res, next) => {
   const token = req.header("Authorization")?.replace("Bearer ", "");
 
+  console.log("Testing")
   if (!token) {
     return res.status(401).json({
       responseCode: apiResponseCode.UNAUTHORIZED,

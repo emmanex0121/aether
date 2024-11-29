@@ -3,12 +3,13 @@ import { processPlan } from "../utils/updatePlans.js";
 import Plans from "../models/Plans.js";
 import { apiResponseCode } from "../helper.js";
 
+// systme that updates all users plans where aany user has an active plan.
 const updatePlansDaily = async () => {
   console.log("Cron job triggered: ", new Date()); // Log when the cron job is triggered
   try {
     const plans = await Plans.find().populate("user"); // Ensure user data is available
     if (!plans.length) {
-      console.log("No users have plans");
+      console.error("No users have plans");
       return;
     }
 
@@ -29,20 +30,27 @@ const updatePlansDaily = async () => {
 };
 
 const getPlans = async (req, res) => {
+  const { userId } = req.body;
   try {
-    const plan = await Plans.findOne({ user: req.user });
+    let plan;
+    if (userId) {
+      plan = await Plans.findOne({ user: userId });
+    } else {
+      plan = await Plans.findOne({ user: req.user });
+    }
     if (!plan) {
       return res.status(404).json({
         responseCode: apiResponseCode.USER_NOT_FOUND,
-        responseMessage: "user plans not found",
+        responseMessage: `user ${userId} plans not found`,
         data: null,
       });
     }
-    await processPlan(plan.basic, 7, req.user); // Max 7 days for "Basic"
-    await processPlan(plan.silver, 3, req.user); // Max 3 days for "Silver"
-    await processPlan(plan.gold, 7, req.user); // Max 7 days for "Gold"
-
-    await plan.save(); // Save the updated plan
+    if (!userId) {
+      await processPlan(plan.basic, 7, req.user); // Max 7 days for "Basic"
+      await processPlan(plan.silver, 3, req.user); // Max 3 days for "Silver"
+      await processPlan(plan.gold, 7, req.user); // Max 7 days for "Gold"
+      await plan.save(); // Save the updated plan
+    }
 
     return res.status(200).json({
       responseCode: apiResponseCode.SUCCESS,
