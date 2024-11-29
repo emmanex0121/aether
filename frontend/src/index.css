@@ -5,6 +5,24 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+@layer utilities {
+  .animate-pause-on-hover:hover {
+    animation-play-state: paused;
+  }
+}
+
+:root {
+  --color-brown: #8b4513;
+  --color-brown-light: #d2b48c;
+  --color-brown-dark: #5d3412;
+
+  --color-green: #008000;
+  --color-green-light: #32cd32;
+  --color-green-dark: #006400;
+
+  --color-white: #f5f5f5;
+}
+
 *,
 body {
   font-family: "Bai Jamjuree", sans-serif;
@@ -13,6 +31,25 @@ body {
   transition: all;
   transition-duration: 300;
 } */
+
+.input-style {
+  border-color: var(--color-brown-light);
+  background-color: var(--color-white);
+}
+.input-style:hover,
+.input-style:active,
+.input-style:focus {
+  border-color: var(--color-brown);
+}
+#signup_phone {
+  border-color: var(--color-brown-light);
+  background-color: var(--color-white);
+}
+#signup_phone:hover,
+#signup_phone:active,
+#signup_phone:focus {
+  border-color: var(--color-brown);
+}
 
 /* Carousel button */
 .carousel-btn {
@@ -59,6 +96,12 @@ body {
   padding-left: 1rem;
 }
 
+@media screen and (max-width: 1535px) {
+  .main-content {
+    margin-left: 8rem;
+  }
+}
+
 /* Sidebar transition for mobile */
 @media (max-width: 640px) {
   .content-section {
@@ -75,4 +118,10 @@ body {
 }
 .active-item {
   background-color: brown;
+}
+
+@media screen and (max-width: 350px) {
+  .finance-text {
+    display: none;
+  }
 }

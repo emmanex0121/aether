@@ -2,9 +2,10 @@
 import { Outlet, useLocation, NavLink } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import SideBar from "../layout/SideBar";
-import { UserOutlined } from "@ant-design/icons";
+import { UserOutlined, MessageOutlined } from "@ant-design/icons";
 import "../index.css";
 import { BalanceContext } from "../contexts/useGlobalContext";
+import ChatComponent from "../ui/ChatComponent";
 
 const DashboardLayout = () => {
   const location = useLocation(); // Get the current location
@@ -12,8 +13,8 @@ const DashboardLayout = () => {
     () => localStorage.getItem("selectedTab") || "DashboardContent" // Load from localStorage or default
   );
   const [sideBarShow, setShowSideBar] = useState(false);
-  // const { fetchData, setData, data } = useContext(GlobalContext);
-  const { balanceTotal } = useContext(BalanceContext);
+  const [isChatVisible, setIsChatVisible] = useState(false); // State to toggle chat visibility
+  const { balanceTotal, userData } = useContext(BalanceContext);
 
   // const balanceTotal = localStorage.getItem("balanceTotal");
   // useEffect(() => {
@@ -54,7 +55,7 @@ const DashboardLayout = () => {
         "/chat": "Chat",
         "/logout": "Logout",
       };
-      console.log(location.pathname)
+      console.log(location.pathname);
       const matchedPath = Object.keys(pathMap).find((path) =>
         location.pathname.startsWith(path)
       );
@@ -84,6 +85,11 @@ const DashboardLayout = () => {
     } else {
       setShowSideBar(false);
     }
+  };
+
+  // Toggle Chat Component visibility
+  const toggleChat = () => {
+    setIsChatVisible(!isChatVisible);
   };
 
   return (
@@ -122,6 +128,38 @@ const DashboardLayout = () => {
         <div className="content-section ml-[15.9rem] md:px-6 max-w-[1200px]">
           <Outlet />
         </div>
+        {/* <div className="relative">
+          {location.pathname !== "/user/chat" &&
+            location.pathname !== "/user/logout" && (
+              <div className="fixed lg:right-[10rem] sm:right-[2rem] bottom-[1rem]">
+                <ChatComponent />
+              </div>
+            )}{" "}
+        </div> */}
+
+        {/* Chat Toggle Button */}
+        {location.pathname !== "/user/chat" &&
+          location.pathname !== "/user/logout" && ( // Exclude the chat toggle on the /chat route
+            <div
+              className="chat-toggle-button fixed bottom-10 right-10 p-3 bg-blue-500 rounded-full text-white cursor-pointer"
+              onClick={toggleChat}>
+              <MessageOutlined style={{ fontSize: "24px" }} />
+            </div>
+          )}
+
+        {/* Conditionally render ChatComponent */}
+        {isChatVisible &&
+          location.pathname !== "/chat" && ( // Exclude the chat component on the /chat route
+            <div className="chat-component-container fixed bottom-0 right-0 mb-24 mr-5 w-96 bg-white p-4 shadow-lg rounded-lg">
+              <ChatComponent />
+              {/* Minimize Button */}
+              <button
+                className="minimize-button absolute top-2 right-2 text-xl"
+                onClick={toggleChat}>
+                −
+              </button>
+            </div>
+          )}
       </div>
     </div>
   );

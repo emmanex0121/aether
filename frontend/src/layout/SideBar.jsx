@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Navigate, NavLink } from "react-router-dom";
 import {
   HomeOutlined,
   WalletOutlined,
@@ -40,6 +40,10 @@ const SideBar = ({
       toggleSideBar();
     }
   };
+  const handleLogout = () => {
+    localStorage.clear();
+    Navigate("/signin");
+  };
 
   return (
     <div
@@ -55,7 +59,7 @@ const SideBar = ({
         <span className="text-lg font-bold">Aether</span>
       </div>{" "} */}
       <NavLink
-        to="dashboard"
+        to="/"
         className={`home-logo-text flex items-center mb-8 `}
         onClick={() => handleItemClick("DashboardContent")}>
         <div className=" w-11 h-11 object-contain overflow-hidden relative">
@@ -67,6 +71,7 @@ const SideBar = ({
         </div>
         <span className="text-2xl font-bold">Aether</span>
       </NavLink>
+      Balance
       <div className="mb-10">
         <span className="font-medium">Account Balance</span>
         <div className="flex gap-1">
@@ -84,7 +89,7 @@ const SideBar = ({
         <NavLink
           to="dashboard"
           className={`sidebar-item ${
-            selected === "DashboardContent" || currentPath === "/dashboard"
+            selected === "DashboardContent" || currentPath === "/user/dashboard"
               ? "active-item"
               : ""
           }`}
@@ -96,7 +101,7 @@ const SideBar = ({
         <NavLink
           to="plans"
           className={`sidebar-item ${
-            selected === "Plans" || currentPath === "/plans"
+            selected === "Plans" || currentPath === "/user/plans"
               ? "active-item"
               : ""
           }`}
@@ -108,7 +113,7 @@ const SideBar = ({
         <NavLink
           to="transactions"
           className={`sidebar-item ${
-            selected === "Transactions" || currentPath === "/transactions"
+            selected === "Transactions" || currentPath === "/user/transactions"
               ? "active-item"
               : ""
           }`}
@@ -120,7 +125,7 @@ const SideBar = ({
         <NavLink
           to="wallet"
           className={`sidebar-item ${
-            selected === "Wallet" || currentPath === "/wallet"
+            selected === "Wallet" || currentPath === "/user/wallet"
               ? "active-item"
               : ""
           }`}
@@ -132,7 +137,7 @@ const SideBar = ({
         <NavLink
           to="verification"
           className={`sidebar-item ${
-            selected === "Verification" || currentPath === "/verification"
+            selected === "Verification" || currentPath === "/user/verification"
               ? "active-item"
               : ""
           }`}
@@ -144,7 +149,7 @@ const SideBar = ({
         <NavLink
           to="profile"
           className={`sidebar-item ${
-            selected === "Profile" || currentPath === "/profile"
+            selected === "Profile" || currentPath === "/user/profile"
               ? "active-item"
               : ""
           }`}
@@ -156,7 +161,9 @@ const SideBar = ({
         <NavLink
           to="chat"
           className={`sidebar-item ${
-            selected === "Chat" || currentPath === "/chat" ? "active-item" : ""
+            selected === "Chat" || currentPath === "/user/chat"
+              ? "active-item"
+              : ""
           }`}
           onClick={() => handleItemClick("Chat")}>
           <MessageOutlined />
@@ -166,11 +173,11 @@ const SideBar = ({
         <NavLink
           to="logout"
           className={`sidebar-item ${
-            selected === "Logout" || currentPath === "/logout"
+            selected === "Logout" || currentPath === "/user/logout"
               ? "active-item"
               : ""
           }`}
-          onClick={() => handleItemClick("Logout")}>
+          onClick={() => handleLogout()}>
           <LogoutOutlined />
           <span>Logout</span>
         </NavLink>

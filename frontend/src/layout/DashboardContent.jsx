@@ -12,7 +12,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { BalanceContext } from "../contexts/useGlobalContext";
+import { BalanceContext, GlobalContext } from "../contexts/useGlobalContext";
 
 ChartJS.register(
   CategoryScale,
@@ -26,6 +26,8 @@ ChartJS.register(
 
 const DashboardContent = () => {
   const { balanceTotal } = useContext(BalanceContext);
+  const { userData } = useContext(GlobalContext);
+  const { verificationStatus } = userData || {};
 
   // Example data for the chart
   const data = {
@@ -60,9 +62,11 @@ const DashboardContent = () => {
 
   return (
     <div>
-      <div className="my-4">
-        <KycRequired />
-      </div>{" "}
+      {verificationStatus !== "verified" && (
+        <div className="my-4">
+          <KycRequired />
+        </div>
+      )}
       <div className="flex flex-wrap items-center my-12 gap-x-[13rem] gap-y-4">
         <div className="custom-bl flex flex-col">
           <span className="text-3xl font-bold">Balance </span>

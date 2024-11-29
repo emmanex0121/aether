@@ -29,7 +29,7 @@ const Plans = () => {
         </div>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-2xl font-medium ">Interest Accrued</h2>
-          <span>$${totalInterest.toFixed(2)}</span>
+          <span>${totalInterest.toFixed(2)}</span>
         </div>{" "}
         <div className="flex items-center justify-between font-bold">
           <h2 className="text-2xl">Current Investment</h2>

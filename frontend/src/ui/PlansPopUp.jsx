@@ -12,7 +12,14 @@ const PlansPopUp = ({ onClose, plan, investment, interest, days }) => {
   const navigate = useNavigate(); // Initialize the navigate hook
   const [investmentAmount, setInvestmentAmount] = useState("");
   const [selectedWallet, setSelectedWallet] = useState("usdt");
-  const { balanceUSDT, balanceLTC, balanceBTC } = useContext(BalanceContext);
+  const {
+    balanceUSDT,
+    balanceLTC,
+    balanceBTC,
+    setBalanceUSDT,
+    setBalanceLTC,
+    setBalanceBTC,
+  } = useContext(BalanceContext);
   const { putData, postData, currentPlans } = useContext(GlobalContext);
 
   const handleSubmit = () => {
@@ -35,12 +42,22 @@ const PlansPopUp = ({ onClose, plan, investment, interest, days }) => {
       }, 2000);
     };
     let walletData = {};
-    if (selectedWallet === "ltc")
-      walletData = { LTC: balanceLTC - investmentAmount };
-    if (selectedWallet === "btc")
-      walletData = { BTC: balanceBTC - investmentAmount };
-    if (selectedWallet === "usdt")
-      walletData = { USDT: balanceUSDT - investmentAmount };
+    let updatedBalance;
+    if (selectedWallet === "ltc") {
+      updatedBalance = balanceLTC - investmentAmount;
+      walletData = { LTC: updatedBalance };
+      setBalanceLTC(updatedBalance);
+    }
+    if (selectedWallet === "btc") {
+      updatedBalance = balanceBTC - investmentAmount;
+      walletData = { BTC: updatedBalance };
+      setBalanceBTC(updatedBalance);
+    }
+    if (selectedWallet === "usdt") {
+      updatedBalance = balanceUSDT - investmentAmount;
+      walletData = { USDT: updatedBalance };
+      setBalanceUSDT(updatedBalance);
+    }
 
     // console.log("wallet data", walletData);
 

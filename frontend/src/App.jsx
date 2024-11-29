@@ -2,11 +2,16 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import SignIn from "./views/SignIn";
 import SignUp from "./views/SignUp";
 import Home from "./views/Home";
+import About from "./views/About";
+import Products from "./views/Products";
+import PlansHome from "./views/PlansHome";
 import { App as AntdApp } from "antd";
 import DashboardLayout from "./views/DashboardLayout";
 import ProtectedRoutes from "./ProtectedRoutes";
+import UnprotectedRoutes from "./UnprotectedRotes";
 import AdminProtectedRoutes from "./views/AdminProtectedRoutes";
 import AdminDashboard from "./views/AdminDashboard";
+import AdminSettings from "./views/AdminSettings";
 import AdminSignIn from "./views/AdminSignIn";
 import Plans from "./layout/Plans";
 import Transaction from "./layout/Transaction";
@@ -25,15 +30,51 @@ const App = () => {
   const router = createBrowserRouter([
     {
       path: "/",
-      Component: Home,
+      element: (
+        <UnprotectedRoutes>
+          <Home />
+        </UnprotectedRoutes>
+      ),
     },
     {
       path: "/signup",
-      Component: SignUp,
+      element: (
+        <UnprotectedRoutes>
+          <SignUp />
+        </UnprotectedRoutes>
+      ),
     },
     {
       path: "/signin",
-      Component: SignIn,
+      element: (
+        <UnprotectedRoutes>
+          <SignIn />
+        </UnprotectedRoutes>
+      ),
+    },
+    {
+      path: "/about",
+      element: (
+        <UnprotectedRoutes>
+          <About />
+        </UnprotectedRoutes>
+      ),
+    },
+    {
+      path: "/plans",
+      element: (
+        <UnprotectedRoutes>
+          <PlansHome />
+        </UnprotectedRoutes>
+      ),
+    },
+    {
+      path: "/product",
+      element: (
+        <UnprotectedRoutes>
+          <Products />
+        </UnprotectedRoutes>
+      ),
     },
     {
       path: "/user",
@@ -94,15 +135,25 @@ const App = () => {
     },
     {
       path: "/admin/signin",
-      Component: AdminSignIn,
+      element: (
+        <UnprotectedRoutes>
+          <AdminSignIn />
+        </UnprotectedRoutes>
+      ),
     },
     {
       path: "/admin/dashboard",
       element: (
         <AdminProtectedRoutes>
-          <AdminDashboard />
+          <GlobalProvider>
+            <AdminDashboard />
+          </GlobalProvider>
         </AdminProtectedRoutes>
       ),
+    },
+    {
+      path: "/admin/settings",
+      Component: AdminSettings,
     },
   ]);
   return (

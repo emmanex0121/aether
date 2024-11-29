@@ -3,6 +3,10 @@ import { Form, Input, Button, Card } from "antd";
 // import useNotification from "../customHooks/useNotification";
 import axios from "axios";
 import { useAuth } from "../customHooks/useCustomAuth";
+import NavBar from "../layout/NavBar";
+import Line from "../ui/Line";
+import "../index.css";
+import { Link } from "react-router-dom";
 
 const SignUp = () => {
   const [form] = Form.useForm();
@@ -18,6 +22,7 @@ const SignUp = () => {
           `https://ipinfo.io/json?token=ff55629580ecf2`
         );
         setCountry(response.data.country); // Set country based on response
+        console.log(country); // Debug Line
         form.setFieldsValue({ country: response.data.country }); // Prefill country field in form
       } catch (error) {
         console.error("Error fetching country:", error);
@@ -29,6 +34,11 @@ const SignUp = () => {
   const onFinish = (values) => {
     console.log(country);
     console.log("Form Values:", values);
+    if (values.honeypot) {
+      // If honeypot field is filled, it's a bot submission
+      console.log("Bot detected!");
+      return;
+    }
     setloading(true);
     // onNotify("success", "Successful", "User addedd");
 
@@ -42,148 +52,192 @@ const SignUp = () => {
   };
 
   return (
-    <div className="min-h-[100svh] flex items-center justify-center">
-      <Card className="max-w-[40rem] w-[100%]">
-        <Form
-          form={form}
-          name="signup"
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          layout="vertical"
-          labelCol={{ span: 24 }}
-          wrapperCol={{ span: 24 }}
-          initialValues={{
-            prefix: "+",
-            country: country,
-          }}>
-          <div className="flex align-center justify-between gap-4 w-full">
+    <div>
+      <NavBar />
+      <div className="flex flex-col items-center justify-center">
+        <h1 className="text-center text-3xl text-brown font-bold my-10">
+          Sign Up
+        </h1>
+        <Card className="max-w-[40rem] w-[100%] mb-20 shadow-2xl bg-white">
+          <Form
+            form={form}
+            name="signup"
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            layout="vertical"
+            labelCol={{ span: 24 }}
+            wrapperCol={{ span: 24 }}
+            initialValues={{
+              prefix: "+",
+              country: country,
+            }}>
+            <p className="text-xl font-semibold text-brown mb-3">
+              Personal information
+            </p>
+
+            <div className="flex align-center justify-between gap-4 w-full">
+              <Form.Item
+                className="w-full"
+                label="First Name"
+                name="firstName"
+                rules={[
+                  { required: true, message: "Please enter your first name" },
+                ]}>
+                <Input className="input-style" />
+              </Form.Item>
+
+              <Form.Item
+                className="w-full"
+                label="Last Name"
+                name="lastName"
+                rules={[
+                  { required: true, message: "Please enter your last name" },
+                ]}>
+                <Input className="input-style" />
+              </Form.Item>
+            </div>
+
             <Form.Item
-              className="w-full"
-              label="First Name"
-              name="firstName"
+              label="Username"
+              name="userName"
               rules={[
-                { required: true, message: "Please enter your first name" },
+                { required: true, message: "Please enter a unique username." },
               ]}>
-              <Input />
+              <Input className="input-style" />
             </Form.Item>
 
             <Form.Item
-              className="w-full"
-              label="Last Name"
-              name="lastName"
+              label="Email"
+              name="email"
               rules={[
-                { required: true, message: "Please enter your last name" },
+                { required: true, message: "Please enter your email" },
+                { type: "email", message: "Enter a valid email" },
               ]}>
-              <Input />
-            </Form.Item>
-          </div>
-
-          <Form.Item
-            label="Username"
-            name="userName"
-            rules={[
-              { required: true, message: "Please enter a unique username." },
-            ]}>
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            label="Email"
-            name="email"
-            rules={[
-              { required: true, message: "Please enter your email" },
-              { type: "email", message: "Enter a valid email" },
-            ]}>
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            label="Phone"
-            name="phone"
-            rules={[
-              { required: true, message: "Please enter your phone number" },
-              { pattern: /^\d{10,15}$/, message: "Enter a valid phone number" },
-            ]}>
-            <Input addonBefore="+" />
-          </Form.Item>
-
-          <Form.Item
-            label="Date of Birth"
-            name="dob"
-            rules={[
-              { required: true, message: "Please select your date of birth" },
-            ]}>
-            <Input type="date" />
-          </Form.Item>
-
-          <Form.Item
-            label="Password"
-            name="password"
-            rules={[{ required: true, message: "Please enter your password" }]}>
-            <Input.Password />
-          </Form.Item>
-
-          {/* Address Fields */}
-          <Form.Item
-            label="Street"
-            name="street"
-            rules={[{ required: true, message: "Please enter your street" }]}>
-            <Input />
-          </Form.Item>
-
-          <div className="flex items-center gap-2">
-            <Form.Item className="w-full" label="apt" name="apt">
-              <Input />
+              <Input className="input-style" />
             </Form.Item>
 
             <Form.Item
-              label="zip"
-              name="zip"
-              rules={[{ required: true, message: "Please enter your zip" }]}>
-              <Input maxLength={5} />
-            </Form.Item>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Form.Item
-              className="w-full"
-              label="City"
-              name="city"
-              rules={[{ required: true, message: "Please enter your city" }]}>
-              <Input />
+              label="Phone"
+              name="phone"
+              rules={[
+                { required: true, message: "Please enter your phone number" },
+                {
+                  pattern: /^\d{10,15}$/,
+                  message: "Enter a valid phone number",
+                },
+              ]}>
+              <Input className="input-style !border-red-400" addonBefore="+" />
             </Form.Item>
 
             <Form.Item
-              className="w-full"
-              label="State"
-              name="state"
-              rules={[{ required: true, message: "Please enter your state" }]}>
-              <Input />
+              label="Date of Birth"
+              name="dob"
+              rules={[
+                { required: true, message: "Please select your date of birth" },
+              ]}>
+              <Input className="input-style" type="date" />
             </Form.Item>
-          </div>
 
-          <Form.Item
-            label="Country"
-            name="country"
-            rules={[{ required: true, message: "Please select your country" }]}>
-            <Input
-              type="text"
-              // disabled
-              variant="filled"
-              readOnly
-              minLength={2}
-              // value="HELLO"
-              // defaultValue="Hello"
-            />
-          </Form.Item>
+            <Form.Item
+              label="Password"
+              name="password"
+              rules={[
+                { required: true, message: "Please enter your password" },
+              ]}>
+              <Input.Password className="input-style" />
+            </Form.Item>
 
-          <Form.Item>
-            <Button type="primary" htmlType="submit" loading={loading}>
-              Sign Up
-            </Button>
-          </Form.Item>
-        </Form>
-      </Card>
+            <div className="my-10">
+              <Line />
+            </div>
+            <p className="text-xl font-semibold text-brown mb-3">
+              Address Information
+            </p>
+
+            {/* Address Fields */}
+            <Form.Item
+              label="Street"
+              name="street"
+              rules={[{ required: true, message: "Please enter your street" }]}>
+              <Input className="input-style" />
+            </Form.Item>
+
+            <div className="flex items-center gap-2">
+              <Form.Item className="w-full" label="apt" name="apt">
+                <Input className="input-style" />
+              </Form.Item>
+
+              <Form.Item
+                label="zip"
+                name="zip"
+                rules={[{ required: true, message: "Please enter your zip" }]}>
+                <Input className="input-style" maxLength={5} />
+              </Form.Item>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Form.Item
+                className="w-full"
+                label="City"
+                name="city"
+                rules={[{ required: true, message: "Please enter your city" }]}>
+                <Input className="input-style" />
+              </Form.Item>
+
+              <Form.Item
+                className="w-full"
+                label="State"
+                name="state"
+                rules={[
+                  { required: true, message: "Please enter your state" },
+                ]}>
+                <Input className="input-style" />
+              </Form.Item>
+            </div>
+
+            <Form.Item
+              label="Country"
+              name="country"
+              rules={[
+                { required: true, message: "Please select your country" },
+              ]}>
+              <Input
+                className="input-style"
+                type="text"
+                // disabled
+                variant="filled"
+                readOnly
+                minLength={2}
+                // value="HELLO"
+                // defaultValue="Hello"
+              />
+            </Form.Item>
+
+            {/* Honeypot Field */}
+            <Form.Item name="honeypot" style={{ display: "none" }}>
+              <Input className="input-style" />
+            </Form.Item>
+
+            <Form.Item className="text-center">
+              <Button
+                className="bg-brown hover:!bg-brown-dark text-xl py-6 px-8 font-semibold mt-8"
+                type="primary"
+                htmlType="submit"
+                loading={loading}>
+                Sign Up
+              </Button>
+            </Form.Item>
+          </Form>
+          <p className="flex items-center gap-2">
+            Already have an account?
+            <span className="text-brown-dark text-lg font-medium">
+              <Link to="/signin" className="hover:text-brown-light">
+                Signin
+              </Link>
+            </span>
+          </p>
+        </Card>
+      </div>
     </div>
   );
 };

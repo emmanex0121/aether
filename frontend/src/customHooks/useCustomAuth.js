@@ -49,6 +49,11 @@ const useAuth = () => {
         localStorage.setItem("email", response.data?.data?.email);
         localStorage.setItem("userName", response.data?.data?.userName);
         localStorage.setItem("phone", response.data?.data?.phone);
+        localStorage.setItem(
+          "verificationStatus",
+          response.data?.data?.verificationStatus
+        );
+        console.log(response.data?.data.verificationStatus);
 
         // upon completion
         setloading(false);

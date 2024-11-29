@@ -21,8 +21,12 @@ const AdminSignIn = () => {
   };
 
   return (
-    <div className="min-h-[100svh] flex items-center justify-center">
-      <Card className="max-w-[40rem] w-[100%]">
+    <div className="min-h-[100svh] flex flex-col gap-y-8 items-center justify-center">
+      <h1 className="text-center text-3xl font-bold text-brown">
+        ADMIN SIGN IN
+      </h1>
+      
+      <Card className="max-w-[40rem] w-[100%] bg-white shadow-2xl">
         <Form
           // form={form}
           name="signup"
@@ -31,15 +35,6 @@ const AdminSignIn = () => {
           layout="vertical"
           labelCol={{ span: 24 }}
           wrapperCol={{ span: 24 }}>
-          {/* <Form.Item
-            label="Username"
-            name="userName"
-            rules={[
-              { required: true, message: "Please enter a unique username." },
-            ]}>
-            <Input />
-          </Form.Item> */}
-          <h1>ADMIN SIGN IN</h1>
           <Form.Item
             label="Email"
             name="email"
@@ -47,19 +42,23 @@ const AdminSignIn = () => {
               { required: true, message: "Please enter your email" },
               { type: "email", message: "Enter a valid email" },
             ]}>
-            <Input />
+            <Input className="input-style" />
           </Form.Item>
 
           <Form.Item
             label="Password"
             name="password"
             rules={[{ required: true, message: "Please enter your password" }]}>
-            <Input.Password />
+            <Input.Password className="input-style" />
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" loading={loading}>
-              Sign Up
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={loading}
+              className="bg-brown hover:!bg-brown-dark">
+              Sign In
             </Button>
           </Form.Item>
         </Form>

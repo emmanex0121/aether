@@ -18,6 +18,28 @@ export const endpoints = {
   plans: {
     add: "user/plans/add",
     history: "user/plans/",
-    // update: "user/plans/update"
+  },
+  upload: "uploads",
+  verification: {
+    start: "verification/start",
+    get: "verification",
+  },
+  user: {
+    get: "user",
+  },
+  message: {
+    send: "chat/sendMessage",
+    get: "chat/getUpdates",
+    getMessages: "chat/messages",
+    getHistory: "chat",
+    save: "chat/save",
+    close: "chat/close",
+  },
+  admin: {
+    getUsers: "admin/users/getusers",
+    getUserTransactions: "admin/user/transactions",
+    updateTransaction: "admin/user/transaction/update",
+    updateVerification: "admin/user/verification/update",
+    getPlans: "admin/user/plans",
   },
 };

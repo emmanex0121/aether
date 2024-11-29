@@ -42,8 +42,48 @@ const GlobalProvider = ({ children }) => {
   const [currentPlans, setCurrentPlans] = useState([]);
   const [totalInterest, setTotalInterest] = useState(0);
   const [currentInvestment, setCurrentInvestment] = useState([]);
+  const [verification, setVerification] = useState("");
+  const [userData, setUserData] = useState({});
+  const [messages, setMessages] = useState([]);
+  const [sendStatus, setSendStatus] = useState("");
+  // const [loading, setLoading] = useState(false); // Handle loading for messages
 
   const token = localStorage.getItem("***");
+
+  // Function to fetch chat messages
+  const fetchMessages = async () => {
+    try {
+      setLoading(true);
+      const newMessages = await axiosget(endpoints.message.getMessages, token);
+      setMessages(newMessages);
+      setLoading(false);
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
+    }
+  };
+
+  // Function to send a chat message
+  const sendMessage = async (messageText) => {
+    try {
+      setLoading(true);
+      await axiospost(endpoints.message.send, { message: messageText }, token);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { text: messageText, isOwnMessage: true },
+      ]);
+      setSendStatus("✔");
+      setLoading(false);
+    } catch (err) {
+      setSendStatus("x");
+      setError(err.message);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchMessages(); // Fetch messages on load
+  }, []);
 
   // Function to perform a post req
   const postData = async (urlEndpoint, data) => {
@@ -60,6 +100,8 @@ const GlobalProvider = ({ children }) => {
       setLoading(false);
       setError(err.message);
       console.error("POST failed:", err.response);
+      throw err;
+      // return;
     } finally {
       setLoading(false);
     }
@@ -80,6 +122,7 @@ const GlobalProvider = ({ children }) => {
       setLoading(false);
       setError(err.message);
       console.error("PUT failed:", err.message);
+      throw err;
     } finally {
       setLoading(false);
     }
@@ -99,6 +142,7 @@ const GlobalProvider = ({ children }) => {
       setLoading(false);
       setError(err.message);
       console.error("POST failed:", err);
+      throw err;
     } finally {
       setLoading(false);
     }
@@ -147,6 +191,34 @@ const GlobalProvider = ({ children }) => {
     fetchPlans();
   }, []);
 
+  useEffect(() => {
+    const fetUserData = async () => {
+      const fetchedUserData = await fetchData(endpoints.user.get);
+      console.log("line 197", fetchedUserData);
+      setUserData(fetchedUserData);
+    };
+
+    fetUserData();
+  }, []);
+
+  useEffect(() => {
+    const getVerification = async () => {
+      try {
+        const response = await fetchData(endpoints.verification.get);
+        console.log("Line 165", response.verificationStatus);
+        if (response.verificationStatus !== verification) {
+          setVerification(response.verificationStatus);
+        }
+      } catch (error) {
+        console.error("Error fetching verification:", error.message);
+      }
+    };
+
+    getVerification();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [verification]);
+
+  // console.log("line 162", verification);
   // Read balanceTotal from localStorage
   // Fetch the balance and store it in the context
   useEffect(() => {
@@ -175,12 +247,13 @@ const GlobalProvider = ({ children }) => {
     };
     fetchBalance();
 
-    // Set interval to fetch balance every 30 seconds
-    const intervalId = setInterval(fetchBalance, 20000); // 30000 ms = 30 seconds
+    // // Set interval to fetch balance every 30 seconds
+    // const intervalId = setInterval(fetchBalance, 20000); // 30000 ms = 30 seconds
 
-    // Cleanup interval on unmount
-    return () => clearInterval(intervalId);
-  }, []);
+    // // Cleanup interval on unmount
+    // return () => clearInterval(intervalId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [balanceTotal, balanceUSDT, balanceLTC, balanceBTC]);
 
   useEffect(() => {
     const fetchAddress = async () => {
@@ -203,12 +276,13 @@ const GlobalProvider = ({ children }) => {
     // initial render
     fetchAddress();
 
-    // Set interval to fetch balance every 30 seconds
-    const intervalId = setInterval(fetchAddress, 20000); // 30000 ms = 30 seconds
+    // // Set interval to fetch balance every 30 seconds
+    // const intervalId = setInterval(fetchAddress, 20000); // 30000 ms = 30 seconds
 
-    // Cleanup interval on unmount
-    return () => clearInterval(intervalId);
-  }, []);
+    // // Cleanup interval on unmount
+    // return () => clearInterval(intervalId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Dependency array
 
   const value = {
     postData,
@@ -222,6 +296,14 @@ const GlobalProvider = ({ children }) => {
     currentPlans,
     totalInterest,
     currentInvestment,
+    verification,
+    setVerification,
+    // setUserData,
+    userData,
+    messages,
+    sendMessage,
+    fetchMessages,
+    sendStatus,
   };
 
   const walletAddress = {
@@ -235,6 +317,10 @@ const GlobalProvider = ({ children }) => {
     balanceBTC,
     balanceLTC,
     balanceUSDT,
+    setBalanceBTC,
+    setBalanceLTC,
+    setBalanceTotal,
+    setBalanceUSDT,
   };
 
   return (
