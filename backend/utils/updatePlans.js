@@ -1,62 +1,77 @@
 // Helper function to update plan details
 import Wallet from "../models/Wallet.js";
 
-const processPlan = async (planDetails, maxDays, user) => {  // Add 'async' here
+const processPlan = async (planDetails, maxDays, user) => {
+  // Add 'async' here
   if (!planDetails || planDetails.initialValue <= 0) return;
 
   const now = new Date();
-  const lastUpdate = new Date(planDetails.updatedAt); // Tracks when the plan was last updated
+  const lastUpdate = new Date(planDetails.updatedAt || now); // Tracks when the plan was last updated
   const daysElapsed = Math.floor((now - lastUpdate) / (1000 * 60 * 60 * 24)); // Calculate elapsed days
 
   // Check if initial value has changed, indicating a new investment
-  const initialValue = parseFloat(planDetails.initialValue);
-  const previousInitialValue = parseFloat(planDetails.previousInitialValue); // Track the previous initial value (this can be stored in a field or passed along)
+  const initialValue = parseFloat(planDetails.initialValue || 0);
+  const previousInitialValue = parseFloat(
+    planDetails.previousInitialValue || 0
+  );
+  const percentage = parseFloat(planDetails.percentage || 0);
 
+  if (initialValue <= 0 || percentage <= 0) return; // Ensure valid values
+
+  if (initialValue < 250) {
+    throw new Error("Minimum investment amount is 250");
+  }
+  // Reset plan if `initialValue` changes
   if (initialValue !== previousInitialValue) {
-    // Reset all fields when the initialValue changes (new investment)
-    planDetails.currenInterest = "0"; // Reset current interest
-    planDetails.days = {}; // Clear days data
-    planDetails.lastProcessedDay = 0; // Reset processed day count
-    planDetails.previousInitialValue = planDetails.initialValue; // Update the previous initial value
+    planDetails.currenInterest = "0";
+    planDetails.days = {};
+    planDetails.lastProcessedDay = 0;
+    planDetails.previousInitialValue = initialValue;
+    await planDetails.save(); // Persist reset
   }
 
-  if (initialValue > 0 && initialValue > 250) {
-    
-    // Calculate interest for each day if there has been a valid initialValue
-    if (daysElapsed > 0) {
-      const percentage = parseFloat(planDetails.percentage);
+  // Calculate interest for each day if there has been a valid initialValue
+  if (daysElapsed > 0) {
+    const percentage = parseFloat(planDetails.percentage);
 
-      for (
-        let i = 1;
-        i <= daysElapsed && planDetails.lastProcessedDay < maxDays;
-        i++
-      ) {
-        const nextDay = planDetails.lastProcessedDay + 1; // Calculate the next day
-        const dayKey = `day${nextDay}`;
+    for (
+      let i = 1;
+      i <= daysElapsed && planDetails.lastProcessedDay < maxDays;
+      i++
+    ) {
+      const nextDay = planDetails.lastProcessedDay + 1; // Calculate the next day
+      const dayKey = `day${nextDay}`;
 
-        if (!planDetails.days[dayKey]) {
-          // Calculate interest for the current day
-          const dailyInterest = (percentage / 100) * initialValue;
-          planDetails.currenInterest = (
-            parseFloat(planDetails.currenInterest) + dailyInterest
-          ).toString();
-          planDetails.days[dayKey] = planDetails.currenInterest;
-          planDetails.lastProcessedDay = nextDay; // Update the last processed day
-        }
+      if (!planDetails.days[dayKey]) {
+        // Calculate interest for the current day
+        const dailyInterest = (percentage / 100) * initialValue;
+        planDetails.currenInterest = (
+          parseFloat(planDetails.currenInterest) + dailyInterest
+        ).toString();
+        planDetails.days[dayKey] = planDetails.currenInterest;
+        planDetails.lastProcessedDay = nextDay; // Update the last processed day
       }
-
-      // If plan period ends, calculate ROI and update wallet
-      if (planDetails.lastProcessedDay >= maxDays) {
-        const totalReturn = initialValue + parseFloat(planDetails.currenInterest);
-        await updateWallet(user._id, totalReturn); // Now works as expected with async
-
-        // Reset plan after completion
-        planDetails.initialValue = "0";
-        planDetails.currenInterest = "0";
-        planDetails.days = {};
-        planDetails.lastProcessedDay = 0;
-      }
+      // Save after each day's calculation
+      await planDetails.save();
     }
+
+    // If plan period ends, calculate ROI and update wallet
+    if (planDetails.lastProcessedDay >= maxDays) {
+      const totalReturn =
+        initialValue + parseFloat(planDetails.currenInterest || 0);
+      await updateWallet(user._id, totalReturn); // Now works as expected with async
+
+      // Reset plan after completion
+      planDetails.initialValue = "0";
+      planDetails.currenInterest = "0";
+      planDetails.days = {};
+      planDetails.lastProcessedDay = 0;
+
+      await planDetails.save(); // Persist reset
+    }
+    // Update `updatedAt` to now
+    planDetails.updatedAt = now;
+    await planDetails.save();
   }
 };
 
@@ -78,7 +93,6 @@ const updateWallet = async (userId, amountToAdd) => {
 };
 
 export { processPlan };
-
 
 ////////////////////
 // VERSION 2 //
