@@ -70,7 +70,7 @@ const PlanSelect = () => {
               name="basic"
               type="primary"
               onClick={() => showPopup("basic")}
-              className="w-full flex items-center justify-center rounded py-4 text-lg font-bold text-white bg-red-900 hover:text-blue-300 transition duration-300 ease-in-out">
+              className="w-full flex items-center justify-center rounded py-4 text-lg font-bold text-white bg-brown-dark hover:text-white hover:bg-brown transition-all duration-300 ease-in-out">
               Invest Now
             </button>
           </div>
@@ -102,7 +102,7 @@ const PlanSelect = () => {
               name="silver"
               type="primary"
               onClick={() => showPopup("silver")}
-              className="w-full flex items-center justify-center rounded py-4 text-lg font-bold text-white bg-red-900 hover:text-blue-300 transition duration-300 ease-in-out">
+              className="w-full flex items-center justify-center rounded py-4 text-lg font-bold text-white bg-brown-dark hover:text-white hover:bg-brown transition-all duration-300 ease-in-out">
               Invest Now
             </button>
           </div>
@@ -135,7 +135,7 @@ const PlanSelect = () => {
               name="gold"
               type="primary"
               onClick={() => showPopup("gold")}
-              className="w-full flex items-center justify-center rounded py-4 text-lg font-bold text-white bg-red-900 hover:text-blue-300 transition duration-300 ease-in-out">
+              className="w-full flex items-center justify-center rounded py-4 text-lg font-bold text-white bg-brown-dark hover:text-white hover:bg-brown transition-all duration-300 ease-in-out">
               Invest Now
             </button>
           </div>

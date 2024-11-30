@@ -127,7 +127,7 @@ const Transaction = () => {
   // ];
 
   return (
-    <div>
+    <div className="">
       <h1 className="text-3xl font-bold mb-10">Transactions</h1>
       <div className="block">
         <Table columns={columns} loading={loading} dataSource={transactions} />

@@ -2,7 +2,7 @@ import ChatComponent from "../ui/ChatComponent";
 
 const Chat = () => {
   return (
-    <div>
+    <div className="">
       <ChatComponent />
     </div>
   );

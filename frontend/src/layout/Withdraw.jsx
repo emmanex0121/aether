@@ -76,10 +76,10 @@ const Withdraw = () => {
     <div>
       <h1 className="text-3xl font-bold mb-10">Withdraw</h1>
       <div className="flex items-center justify-center">
-        <div className="bg-white rounded-lg shadow-lg max-w-md w-full pb-4">
+        <div className="bg-brown-light rounded-lg shadow-lg max-w-md w-full py-4">
           <div className="px-6 flex flex-col gap-4">
             <div>
-              <p className="font-bold text-red-800">
+              <p className="font-bold text-lg text-red-900">
                 !!! CONTACT SUPPORT TO COMPLETE YOUR WITHDRAWAL
               </p>
             </div>
@@ -150,7 +150,7 @@ const Withdraw = () => {
             <div className="w-full flex items-center justify-end gap-2">
               <button
                 onClick={handleSubmit}
-                className="text-md font-bold bg-red-900 text-white py-2 px-4 rounded">
+                className="text-md font-bold bg-brown-dark hover:bg-brown transition-all duration-300 ease-in-out text-white py-2 px-4 rounded">
                 Submit
               </button>
             </div>

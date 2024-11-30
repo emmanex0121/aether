@@ -1,4 +1,6 @@
 import { Navigate, NavLink } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+
 import {
   HomeOutlined,
   WalletOutlined,
@@ -11,25 +13,27 @@ import PropTypes from "prop-types";
 import colorLogo from "../assets/colour-no-texts.png";
 import DepositButton from "../ui/DepositButton";
 import WithdrawButton from "../ui/WithdrawButton";
+import { useContext, useEffect, useState } from "react";
+import { GlobalContext } from "../contexts/useGlobalContext";
 // import { useEffect } from "react";
 const SideBar = ({
   balanceTotal,
-  currentPath,
+  // currentPath,
   toggleSideBar,
   sideBarShow,
   setShowSideBar,
-  selected,
+  // selected,
   setSelected,
 }) => {
-  // useEffect(() => {
-  //   if (currentPath) {
-  //     const pathStrip = () => {
-  //       const segments = currentPath.split("/");
-  //       return segments[1] || "";
-  //     };
-  //     setSelected(pathStrip);
-  //   }
-  // }, [currentPath, selected, setSelected]);
+  const location = useLocation();
+  const [currentPath, setCurrentPath] = useState(location.pathname);
+  const { totalInterest } = useContext(GlobalContext);
+  // console.log(totalInterest);
+
+  useEffect(() => {
+    if (currentPath !== location.pathname) setCurrentPath(location.pathname);
+    console.log(currentPath);
+  }, [location.pathname, currentPath, setCurrentPath, setSelected]);
 
   const handleItemClick = (item) => {
     setSelected(item);
@@ -49,7 +53,7 @@ const SideBar = ({
     <div
       className={`${
         sideBarShow ? "sidebar-show" : "sidebar-hidden"
-      } w-64 min-h-[100vh] bg-blue-200 flex flex-col p-4 fixed top-0 left-0 transition-transform duration-300 ease-in-out`}>
+      } w-64 min-h-[100vh] bg-brown-light flex flex-col p-4 fixed top-0 left-0 transition-transform duration-300 ease-in-out`}>
       <button
         onClick={toggleSideBar}
         className="exit-btn sm:hidden absolute top-4 right-4 text-xl text-black rounded">
@@ -69,16 +73,16 @@ const SideBar = ({
             alt="Aether-logo"
           />
         </div>
-        <span className="text-2xl font-bold">Aether</span>
+        <span className="text-2xl font-bold hover:text-brown">Aether</span>
       </NavLink>
-      Balance
+      {/* Balance */}
       <div className="mb-10">
-        <span className="font-medium">Account Balance</span>
-        <div className="flex gap-1">
+        <span className="font-bold">Account Balance</span>
+        <div className="flex gap-1 font-medium">
           <span>{balanceTotal} </span> <span>USD</span>
         </div>
-        <div className="flex">
-          <span>15.00 </span> <span> USD (Interest Wallet)</span>
+        <div className="flex font-medium gap-1">
+          <span>{totalInterest}</span><span> USD (Interest Wallet)</span>
         </div>
         <div className="flex items-center gap-5 mt-6">
           <DepositButton />
@@ -89,9 +93,8 @@ const SideBar = ({
         <NavLink
           to="dashboard"
           className={`sidebar-item ${
-            selected === "DashboardContent" || currentPath === "/user/dashboard"
-              ? "active-item"
-              : ""
+            // selected === "DashboardContent" ||
+            currentPath.startsWith("/user/dashboard") ? "active-item" : ""
           }`}
           onClick={() => handleItemClick("DashboardContent")}>
           <HomeOutlined />
@@ -101,9 +104,8 @@ const SideBar = ({
         <NavLink
           to="plans"
           className={`sidebar-item ${
-            selected === "Plans" || currentPath === "/user/plans"
-              ? "active-item"
-              : ""
+            // selected === "Plans" ||
+            currentPath.startsWith("/user/plans") ? "active-item" : ""
           }`}
           onClick={() => handleItemClick("Plans")}>
           <WalletOutlined />
@@ -113,9 +115,8 @@ const SideBar = ({
         <NavLink
           to="transactions"
           className={`sidebar-item ${
-            selected === "Transactions" || currentPath === "/user/transactions"
-              ? "active-item"
-              : ""
+            // selected === "Transactions" ||
+            currentPath.startsWith("/user/transactions") ? "active-item" : ""
           }`}
           onClick={() => handleItemClick("Transactions")}>
           <WalletOutlined />
@@ -125,9 +126,8 @@ const SideBar = ({
         <NavLink
           to="wallet"
           className={`sidebar-item ${
-            selected === "Wallet" || currentPath === "/user/wallet"
-              ? "active-item"
-              : ""
+            // selected === "Wallet" ||
+            currentPath.startsWith("/user/wallet") ? "active-item" : ""
           }`}
           onClick={() => handleItemClick("Wallet")}>
           <WalletOutlined />
@@ -137,9 +137,8 @@ const SideBar = ({
         <NavLink
           to="verification"
           className={`sidebar-item ${
-            selected === "Verification" || currentPath === "/user/verification"
-              ? "active-item"
-              : ""
+            // selected === "Verification" ||
+            currentPath.startsWith("/user/verification") ? "active-item" : ""
           }`}
           onClick={() => handleItemClick("Verification")}>
           <WalletOutlined />
@@ -149,9 +148,8 @@ const SideBar = ({
         <NavLink
           to="profile"
           className={`sidebar-item ${
-            selected === "Profile" || currentPath === "/user/profile"
-              ? "active-item"
-              : ""
+            // selected === "Profile" ||
+            currentPath.startsWith("/user/profile") ? "active-item" : ""
           }`}
           onClick={() => handleItemClick("Profile")}>
           <UserOutlined />
@@ -161,9 +159,8 @@ const SideBar = ({
         <NavLink
           to="chat"
           className={`sidebar-item ${
-            selected === "Chat" || currentPath === "/user/chat"
-              ? "active-item"
-              : ""
+            // selected === "Chat" ||
+            currentPath.startsWith("/user/chat") ? "active-item" : ""
           }`}
           onClick={() => handleItemClick("Chat")}>
           <MessageOutlined />
@@ -173,9 +170,7 @@ const SideBar = ({
         <NavLink
           to="logout"
           className={`sidebar-item ${
-            selected === "Logout" || currentPath === "/user/logout"
-              ? "active-item"
-              : ""
+            currentPath.startsWith("/user/logout") ? "active-item" : ""
           }`}
           onClick={() => handleLogout()}>
           <LogoutOutlined />

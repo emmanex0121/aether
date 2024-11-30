@@ -36,8 +36,8 @@ const DashboardContent = () => {
       {
         label: "24 hr Change",
         data: [400.25, 410.75, 415.5, 420.9, 430.8, 440.0], // replace with real data if available
-        borderColor: "rgba(75, 192, 192, 1)",
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        borderColor: "#8b4513",
+        backgroundColor: "#d2b48c",
         tension: 0.3,
       },
     ],
@@ -68,7 +68,7 @@ const DashboardContent = () => {
         </div>
       )}
       <div className="flex flex-wrap items-center my-12 gap-x-[13rem] gap-y-4">
-        <div className="custom-bl flex flex-col">
+        <div className="custom-bl  flex flex-col">
           <span className="text-3xl font-bold">Balance </span>
           <span className="text-xl">${balanceTotal}</span>
         </div>
@@ -78,9 +78,11 @@ const DashboardContent = () => {
         </div>
       </div>
       <div>
-        <span className="text-3xl font-bold">24 hr Change</span>
+        <span className="custom-bl text-3xl font-bold">24 hr Change</span>
         {/* <div>Chart</div> */}
-        <Line data={data} options={options} />
+        <div className="mt-12">
+          <Line data={data} options={options} />
+        </div>
       </div>
     </div>
   );

@@ -61,7 +61,7 @@ const Verification = () => {
             </div>
 
             <div className="mb-6">
-              <h1 className="text-red-700 mb-4">
+              <h1 className="text-red-700 mb-4 font-bold text-lg">
                 Submit a copy of your valid government issued ID
               </h1>
 
@@ -74,7 +74,7 @@ const Verification = () => {
 
             <button
               onClick={handleSubmit}
-              className="text-md font-bold bg-red-900 text-white py-2 px-4">
+              className="text-md font-bold bg-brown-dark hover:bg-brown transition-all duration-300 ease-in-out text-white py-2 px-4">
               Verify Now
             </button>
           </div>

@@ -14,7 +14,6 @@ import img6 from "../assets/image6.png";
 import { useState } from "react";
 import Footer from "../layout/Footer";
 
-
 const Home = () => {
   const { Panel } = Collapse;
   const [activeKey, setActiveKey] = useState([]);
@@ -43,7 +42,7 @@ const Home = () => {
             <div>
               <p className="text-sm">Secure and easy way to trade.</p>
               <p className="text-sm">
-                150.000+ traders using aether Automated investment bots
+                150.000+ traders using aether Automated investment bots.
               </p>
             </div>
             <Link to="/signup" className="my-8">

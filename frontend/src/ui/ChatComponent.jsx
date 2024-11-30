@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { GlobalContext } from "../contexts/useGlobalContext";
 import { endpoints } from "../api/endpoints";
 import { Button, Input, message } from "antd"; // Import Ant Design components
-import { SendOutlined } from "@ant-design/icons";
+import { SendOutlined, CloseOutlined } from "@ant-design/icons";
 import PopConfirmModal from "./PopConfirmModal";
 
 const ChatComponent = () => {
@@ -41,7 +41,7 @@ const ChatComponent = () => {
   // Poll for new messages every 5 seconds
   useEffect(() => {
     // fetchMessages();
-    const interval = setInterval(fetchMessages, 20000);
+    const interval = setInterval(fetchMessages, 10000);
     return () => clearInterval(interval); // Clean up on component unmount
   }, []);
 
@@ -100,20 +100,20 @@ const ChatComponent = () => {
   // console.log(messages)
 
   return (
-    <div className="max-w-lg mx-auto p-4 border border-gray-300 rounded-lg bg-gray-50 shadow-md relative">
-      <div className="bg-blue-600 text-white py-2 px-4 rounded-t-lg text-center font-bold">
+    <div className="max-w-lg mx-auto p-4 border border-white rounded-lg bg-white shadow-md relative">
+      <div className="bg-brown text-white py-2 px-4 rounded-t-lg text-center font-bold">
         Live Chat
       </div>
-      <div className="p-4 text-red-500 bg-zinc-100 mb-2">
+      <div className="p-4 text-green-dark font-bold text-lg bg-white mb-2">
         <p>
           Please Leave a message, a customer support agent will respond shortly.
         </p>
       </div>
       <Button
         type="default"
-        className="flex items-center justify-center text-white rounded-lg border-red-700 border-solid text-2xl border-2 font-extrabold bg-red-400 absolute top-5 right-5"
+        className="flex items-center justify-center text-white rounded-lg  text-2xl border-2 border-transparent hover:!border-white hover:!bg-brown-dark hover:!text-white font-extrabold bg-brown-dark transition-all duration-300 ease-in-out absolute top-5 right-5"
         onClick={handleCloseChat}>
-        x
+        <CloseOutlined />
       </Button>
       <div className="p-2 h-64 overflow-y-auto flex flex-col gap-2">
         {messages.map((msg, index) => (
@@ -121,8 +121,8 @@ const ChatComponent = () => {
             key={index}
             className={`p-3 rounded-lg ${
               msg.isOwnMessage
-                ? "bg-blue-500 text-white self-end"
-                : "bg-gray-200 text-black self-start"
+                ? "bg-brown text-white self-end"
+                : "bg-white-dark text-black self-start"
             }`}>
             {msg.text}
             {msg.isSent && (
@@ -139,13 +139,14 @@ const ChatComponent = () => {
           value={messageText}
           onChange={(e) => setMessage(e.target.value)}
           required
-          className="flex-1"
+          className="flex-1 border-brown-light hover:border-brown active:border-brown focus:border-brown active:outline-none focus:outline-none"
         />
         <Button
           type="primary"
           htmlType="submit"
           loading={loading}
-          disabled={loading}>
+          disabled={loading}
+          className="bg-brown hover:!bg-brown-dark">
           {loading ? "Sending..." : <SendOutlined />}
         </Button>
         <PopConfirmModal

@@ -73,11 +73,11 @@ const Deposit = () => {
             <p>
               You are depositing to USDT - TRC20 wallet. Please double check.
             </p>
-            <p className="text-red-600">
+            <p className="text-green font-semibold text-lg">
               Click Submit after making your transfer.
             </p>
 
-            <div className="py-2 px-2 bg-gray-300 rounded my-4">
+            <div className="py-2 px-2 bg-white rounded my-4">
               {" "}
               <CopyText text={usdtWallet}></CopyText>
             </div>
@@ -88,7 +88,7 @@ const Deposit = () => {
           <div>
             <h2 className="text-lg font-bold">Bitcoin Wallet Details</h2>
             <p>You are depositing to Bitcoin wallet.</p>
-            <p className="text-red-600">
+            <p className="text-green font-semibold text-lg">
               Click Submit after making your transfer.
             </p>{" "}
             <div className="py-2 px-2 bg-gray-300 rounded my-4">
@@ -105,7 +105,7 @@ const Deposit = () => {
               You are depositing to your Litecoin wallet. Double-check your
               details.
             </p>
-            <p className="text-red-600">
+            <p className="text-green font-semibold text-lg">
               Click Submit after making your transfer.
             </p>{" "}
             <div className="py-2 px-2 bg-gray-300 rounded my-4">
@@ -123,13 +123,14 @@ const Deposit = () => {
     <div>
       <h1 className="text-3xl font-bold mb-10">Deposit</h1>
       <div className="flex items-center justify-center">
-        <div className="bg-white rounded-lg shadow-lg max-w-md w-full pb-4">
+        <div className="bg-brown-light rounded-lg shadow-lg max-w-md w-full py-4">
           <div className="px-6 flex flex-col gap-4">
             <div>
               <p className="flex items-center gap-1 font-bold text-lg">
                 Select Wallet <span className="text-red-700 text-xl">*</span>
               </p>
               <Select
+              className=" hover:!border-brown"
                 style={{
                   width: "100%",
                 }}
@@ -188,7 +189,7 @@ const Deposit = () => {
             <div className="w-full flex items-center justify-end gap-2">
               <button
                 onClick={handleSubmit}
-                className="text-md font-bold bg-red-900 text-white py-2 px-4 rounded">
+                className="text-md font-bold bg-brown-dark hover:bg-brown transition-all duration-300 ease-in-out text-white py-2 px-4 rounded">
                 Submit
               </button>
             </div>

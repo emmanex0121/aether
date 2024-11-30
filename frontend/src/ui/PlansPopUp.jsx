@@ -136,7 +136,7 @@ const PlansPopUp = ({ onClose, plan, investment, interest, days }) => {
           <span className="text-lg font-bold">Confirm {plan} Investment</span>
           <button
             onClick={onClose}
-            className="exit-btn top-4 right-4 text-xl text-white rounded bg-red-700">
+            className="exit-btn top-4 right-4 text-xl text-white rounded bg-brown-dark hover:bg-brown transition-all duration-300 ease-in-out">
             ✕
           </button>
         </div>
@@ -204,12 +204,12 @@ const PlansPopUp = ({ onClose, plan, investment, interest, days }) => {
             <button
               onClick={onClose}
               aria-label="Close"
-              className="text-md font-bold bg-red-900 text-white py-2 px-4">
+              className="text-md font-bold bg-brown hover:bg-brown-dark text-white py-2 px-4">
               Close
             </button>
             <button
               onClick={handleSubmit}
-              className="text-md font-bold bg-red-900 text-white py-2 px-4">
+              className="text-md font-bold bg-brown hover:bg-brown-dark text-white py-2 px-4">
               OK
             </button>
           </div>
