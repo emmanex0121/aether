@@ -2,7 +2,6 @@ import schedule from "node-schedule";
 import { processPlan } from "../utils/updatePlans.js";
 import Plans from "../models/Plans.js";
 import { apiResponseCode } from "../helper.js";
-// import schedule from "node-schedule";
 
 // systme that updates all users plans where aany user has an active plan.
 const updatePlansDaily = async () => {

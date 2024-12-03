@@ -3,7 +3,7 @@ import config from "../config.js";
 
 export default () => {
   mongoose
-    .connect(config.connectionstring)
+    .connect(config.connectionstring, {})
     .then(() => {
       console.log("Database connection success");
     })
@@ -11,4 +11,3 @@ export default () => {
       console.error("Database connection failed", error);
     });
 };
- 

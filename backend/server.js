@@ -21,12 +21,13 @@ import { getAddress } from "./controllers/addressController.js";
 import { updatePlansDaily } from "./controllers/plansController.js";
 import { verificationRouter } from "./routes/verificationRouter.js";
 import { chatRouter } from "./routes/chatRouter.js";
+// import { countryRouter } from "./routes/countryRouter.js";
 
 const app = express();
 
 // Middleware
-app.use(express.json()); // Parse JSON payloads
 app.use(cors()); // Enable CORS for cross-origin requests
+app.use(express.json()); // Parse JSON payloads
 
 // Database Connection
 dbConnection(); // Database connection
@@ -52,6 +53,7 @@ app.use("/api/admin/chat", chatRouter);
 // app.use("/api/admin/wallet", walletRouter);
 
 app.use("/api/admin/address", addressRouter);
+// app.use("/api/country", countryRouter);
 
 // Serve uploaded files statically
 const __dirname = path.resolve();
