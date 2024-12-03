@@ -29,24 +29,52 @@ const getAddress = async (req, res) => {
 const addAddress = async (req, res) => {
   try {
     const { ltcWallet, btcWallet, usdtWallet } = req.body;
+
+    if (!ltcWallet && !btcWallet && !usdtWallet) {
+      return res.status(400).json({
+        responseCode: apiResponseCode.BAD_REQUEST,
+        responseMessage:
+          "Incomplete data: At least one field must be provided.",
+        data: null,
+      });
+    }
+
     let address = await AdminAddress.findOne();
 
     if (!address) {
       // Create new user information
-      address = new AdminAddress({
-        btcWallet,
-        ltcWallet,
-        usdtWallet,
-      });
+      // address = new AdminAddress({
+      //   btcWallet,
+      //   ltcWallet,
+      //   usdtWallet,
+      // });
+      address = new AdminAddress();
 
-      // save the new user to database
-      await address.save();
+      // // save the new user to database
+      // await address.save();
+
+      // return res.status(200).json({
+      //   responseCode: apiResponseCode.SUCCESS,
+      //   responseMessage: "Wallets Addresses Added successfully",
+      //   data: address,
+      // });
     }
-    address.btcWallet = btcWallet;
-    address.usdtWallet = usdtWallet;
-    address.ltcWallet = ltcWallet;
+    if (btcWallet || btcWallet?.trim()) {
+      address.btcWallet = btcWallet;
+    }
+    if (usdtWallet || usdtWallet?.trim()) {
+      address.usdtWallet = usdtWallet;
+    }
+    if (ltcWallet || ltcWallet?.trim()) {
+      address.ltcWallet = ltcWallet;
+    }
 
     await address.save();
+    return res.status(200).json({
+      responseCode: apiResponseCode.SUCCESS,
+      responseMessage: "Wallets Addresses Updated successfully",
+      data: address,
+    });
   } catch (err) {
     console.error(err);
     return res.status(500).json({

@@ -48,6 +48,8 @@ app.use("/api/admin/users", userRouter);
 app.use("/api/admin/user", assetRouter);
 app.use("/api/admin/user/verification", verificationRouter);
 app.use("/api/admin/user", planRouter);
+app.use("/api/admin/chat", chatRouter);
+// app.use("/api/admin/wallet", walletRouter);
 
 app.use("/api/admin/address", addressRouter);
 

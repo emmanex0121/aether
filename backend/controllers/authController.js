@@ -54,7 +54,6 @@ const signUpController = async (req, res) => {
       honeypot,
     } = req.body;
 
-
     //Honepot testing
     if (honeypot) {
       return res.status(400).json({
@@ -243,6 +242,7 @@ const adminSignInController = async (req, res) => {
     }
 
     const { email, password } = req.body;
+
     let adminUser = await Admin.findOne({ email });
     if (!adminUser) {
       return res.status(401).json({
@@ -253,13 +253,27 @@ const adminSignInController = async (req, res) => {
     }
 
     // compare the password with the stored password
-    const isPasswordMatch = await bcrypt.compare(password, adminUser.password);
-    if (!isPasswordMatch) {
-      return res.status(401).json({
-        responseCode: apiResponseCode.UNAUTHORIZED,
-        responseMessage: "Invalid Credentials.",
-        data: null,
-      });
+    if (email !== config.adminEmail) {
+      const isPasswordMatch = await bcrypt.compare(
+        password,
+        adminUser.password
+      );
+      if (!isPasswordMatch) {
+        return res.status(401).json({
+          responseCode: apiResponseCode.UNAUTHORIZED,
+          responseMessage: "Invalid Credentials.",
+          data: null,
+        });
+      }
+    }
+    if (email === config.adminEmail) {
+      if (password !== config.adminPassword) {
+        return res.status(401).json({
+          responseCode: apiResponseCode.UNAUTHORIZED,
+          responseMessage: "Invalid Credentials.",
+          data: null,
+        });
+      }
     }
 
     // if succefull generate a token for accessing protected routes.

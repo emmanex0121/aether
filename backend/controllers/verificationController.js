@@ -4,7 +4,7 @@ import VerificationImages from "../models/verificationImages.js";
 
 const submitVerification = async (req, res) => {
   try {
-    const { imageUrls, verificationStatus } = req.body;
+    const {firstName, lastName, imageUrls, verificationStatus } = req.body;
 
     if (!imageUrls) {
       return res.status(400).json({

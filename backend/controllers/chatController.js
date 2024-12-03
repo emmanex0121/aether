@@ -43,6 +43,46 @@ bot.on("message", async (msg) => {
   }
 });
 
+// Gets chat is for the user proveided by the admind
+const getChatId = async (req, res) => {
+  const { userId } = req.body;
+  try {
+    if (!userId) {
+      return res.status(400).json({
+        responseCode: apiResponseCode.BAD_REQUEST,
+        responseMessage: "userId is required.",
+        data: null,
+      });
+    }
+
+    const chat = await Chat.findOne({ user: userId });
+    // console.log(chat);
+
+    if (!chat) {
+      return res.status(404).json({
+        responseCode: apiResponseCode.NOT_FOUND,
+        responseMessage: "userId has no No Chat Id yet.",
+        data: null,
+      });
+    }
+
+    console.log("69 chat controller", chat);
+
+    return res.status(200).json({
+      responseCode: apiResponseCode.SUCCESS,
+      responseMessage: `Succesfully fetched chat for user.`,
+      data: chat,
+    });
+  } catch (error) {
+    console.log("Line 77", err.message);
+    return res.status(500).json({
+      responseCode: apiResponseCode.INTERNAL_SERVER_ERR,
+      responseMessage: "Internal Server Error.",
+      data: null,
+    });
+  }
+};
+
 const addChatId = async (req, res) => {
   const { userId, chatId } = req.body;
   try {
@@ -53,8 +93,31 @@ const addChatId = async (req, res) => {
         data: null,
       });
     }
+    let chat;
 
-    const chat = new Chat({
+    // testing for duplicate cases of chat id
+    chat = await Chat.findOne({ chatId });
+    if (chat) {
+      return res.status(409).json({
+        responseCode: apiResponseCode.BAD_REQUEST,
+        responseMessage: "chatId already exist. Provide a new one.",
+        data: null,
+      });
+    }
+
+    chat = await Chat.findOne({ user: userId });
+    if (chat) {
+      chat.chatId = chatId;
+      await chat.save();
+
+      return res.status(200).json({
+        responseCode: apiResponseCode.SUCCESS,
+        responseMessage: `Succesfully updated chatId for user: ${userId}`,
+        data: chat,
+      });
+    }
+
+    chat = new Chat({
       user: userId,
       chatId,
     });
@@ -268,4 +331,5 @@ export {
   chatHistory,
   addChatId,
   closeChat,
+  getChatId,
 };

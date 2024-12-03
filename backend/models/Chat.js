@@ -8,7 +8,7 @@ const messageSchema = new mongoose.Schema({
 
 const chatSchema = new mongoose.Schema(
   {
-    chatId: { type: String },
+    chatId: { type: String, default: "" },
     messages: {
       type: [messageSchema], // Array of message objects
       default: [], // Default to an empty array

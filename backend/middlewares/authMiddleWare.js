@@ -5,6 +5,7 @@ import config from "../config.js";
 import User from "../models/User.js";
 import Admin from "../models/Admin.js";
 
+
 const authMiddleWare = async (req, res, next) => {
   const token = req.header("Authorization")?.replace("Bearer ", "");
 

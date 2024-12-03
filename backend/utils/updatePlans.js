@@ -1,7 +1,7 @@
 // Helper function to update plan details
 import Wallet from "../models/Wallet.js";
 
-const processPlan = async (planDetails, maxDays, user) => {
+const processPlan = async (plan, planDetails, maxDays, user) => {
   // Add 'async' here
   if (!planDetails || planDetails.initialValue <= 0) return;
 
@@ -23,11 +23,20 @@ const processPlan = async (planDetails, maxDays, user) => {
   }
   // Reset plan if `initialValue` changes
   if (initialValue !== previousInitialValue) {
-    planDetails.currenInterest = "0";
-    planDetails.days = {};
-    planDetails.lastProcessedDay = 0;
-    planDetails.previousInitialValue = initialValue;
-    await planDetails.save(); // Persist reset
+    // planDetails.currenInterest = "0";
+    // planDetails.days = {};
+    // planDetails.lastProcessedDay = 0;
+    // planDetails.previousInitialValue = initialValue;
+    // await plan.save();
+    Object.assign(planDetails, {
+      currentInterest: "0",
+      days: {},
+      lastProcessedDay: 0,
+      previousInitialValue: initialValue,
+    });
+    await plan.save();
+    return;
+    // await planDetails.save(); // Persist reset?
   }
 
   // Calculate interest for each day if there has been a valid initialValue
@@ -46,13 +55,14 @@ const processPlan = async (planDetails, maxDays, user) => {
         // Calculate interest for the current day
         const dailyInterest = (percentage / 100) * initialValue;
         planDetails.currenInterest = (
-          parseFloat(planDetails.currenInterest) + dailyInterest
+          parseFloat(planDetails.currenInterest || 0) + dailyInterest
         ).toString();
         planDetails.days[dayKey] = planDetails.currenInterest;
         planDetails.lastProcessedDay = nextDay; // Update the last processed day
       }
       // Save after each day's calculation
-      await planDetails.save();
+      // await planDetails.save();
+      // return;
     }
 
     // If plan period ends, calculate ROI and update wallet
@@ -66,12 +76,16 @@ const processPlan = async (planDetails, maxDays, user) => {
       planDetails.currenInterest = "0";
       planDetails.days = {};
       planDetails.lastProcessedDay = 0;
+      // planDetails.updatedAt = now;
 
-      await planDetails.save(); // Persist reset
+      // await planDetails.save(); // Persist reset
+      // return;
     }
     // Update `updatedAt` to now
     planDetails.updatedAt = now;
-    await planDetails.save();
+    plan.save();
+    // return;
+    // await planDetails.save();
   }
 };
 

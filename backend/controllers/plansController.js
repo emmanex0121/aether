@@ -18,15 +18,17 @@ const updatePlansDaily = async () => {
       const { basic, silver, gold } = plan;
 
       // updat plans based on the logic un updatPlans
-      await processPlan(basic, 7), plan.user;
-      await processPlan(silver, 3, plan.user);
-      await processPlan(gold, 7, plan.user);
+      await Promise.all([
+        processPlan(plan, basic, 7, plan.user),
+        processPlan(plan, silver, 3, plan.user),
+        processPlan(plan, gold, 7, plan.user),
+      ]);
 
       // Save updated plan
       await plan.save();
     }
   } catch (err) {
-    console.error("Line 28", err.message);
+    console.error("Line 31 plansController", err.message);
   }
 };
 
@@ -47,9 +49,9 @@ const getPlans = async (req, res) => {
       });
     }
     if (!userId) {
-      await processPlan(plan.basic, 7, req.user); // Max 7 days for "Basic"
-      await processPlan(plan.silver, 3, req.user); // Max 3 days for "Silver"
-      await processPlan(plan.gold, 7, req.user); // Max 7 days for "Gold"
+      await processPlan(plan, plan.basic, 7, req.user); // Max 7 days for "Basic"
+      await processPlan(plan, plan.silver, 3, req.user); // Max 3 days for "Silver"
+      await processPlan(plan, plan.gold, 7, req.user); // Max 7 days for "Gold"
       await plan.save(); // Save the updated plan
     }
 

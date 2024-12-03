@@ -7,6 +7,7 @@ import {
   addChatId,
   chatHistory,
   closeChat,
+  getChatId,
   getChatMessages,
   //   getUpdates,
   //   saveChat,
@@ -23,6 +24,7 @@ chatRouter.get("/messages", authMiddleWare, getChatMessages);
 chatRouter.post("/close", authMiddleWare, closeChat);
 chatRouter.get("/", authMiddleWare, chatHistory);
 
-chatRouter.post("/addChatId", adminAuthMiddleWare, addChatId);
+chatRouter.put("/addChatId", adminAuthMiddleWare, addChatId);
+chatRouter.post("/getChatId", adminAuthMiddleWare, getChatId);
 
 export { chatRouter };

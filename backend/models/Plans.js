@@ -56,7 +56,7 @@ const planSchema = new mongoose.Schema(
         type: String,
         default: "0",
       },
-      currenInterest: {
+      currentInterest: {
         type: String,
         default: "0",
       },
@@ -89,7 +89,7 @@ const planSchema = new mongoose.Schema(
         type: String,
         default: "0",
       },
-      currenInterest: {
+      currentInterest: {
         type: String,
         default: "0",
       },

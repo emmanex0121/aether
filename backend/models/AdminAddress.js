@@ -6,15 +6,15 @@ const AdminAddressSchema = new mongoose.Schema(
   {
     ltcWallet: {
       type: String,
-      default: "0",
+      default: "",
     },
     btcWallet: {
       type: String,
-      default: "0",
+      default: "",
     },
     usdtWallet: {
       type: String,
-      default: "0",
+      default: "",
     },
     // user: {
     //   type: mongoose.Schema.Types.ObjectId,

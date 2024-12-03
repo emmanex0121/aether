@@ -5,9 +5,10 @@ import User from "../models/User.js";
 
 // get wallets
 const getWallet = async (req, res) => {
+  // console.log("hehehhehehehehe");
   try {
     // fetch wallets
-    const wallets = await Wallet.findOne({ user: req.user.id });
+    const wallets = await Wallet.findOne();
     // console.log("line 11 wallet controller", wallets);
     if (!wallets) {
       return res.status(400).json({
