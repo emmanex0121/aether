@@ -29,10 +29,10 @@ export const endpoints = {
   },
   message: {
     send: "chat/sendMessage",
-    get: "chat/getUpdates",
+    // get: "chat/getUpdates",
     getMessages: "chat/messages",
     getHistory: "chat",
-    save: "chat/save",
+    // save: "chat/save",
     close: "chat/close",
   },
   admin: {
@@ -41,5 +41,10 @@ export const endpoints = {
     updateTransaction: "admin/user/transaction/update",
     updateVerification: "admin/user/verification/update",
     getPlans: "admin/user/plans",
+    getChatId: "admin/chat/getChatId",
+    addChatId: "admin/chat/addChatId",
+    // getwallets: "admin/wallet/getwallets",
+    getAddresses: "admin/address",
+    updateAddresses: "admin/address/update",
   },
 };

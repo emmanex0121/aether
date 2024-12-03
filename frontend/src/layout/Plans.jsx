@@ -6,7 +6,7 @@ import { useContext } from "react";
 const Plans = () => {
   const { currentPlans, totalInterest, currentInvestment } =
     useContext(GlobalContext);
-  console.log(currentInvestment);
+  // console.log(currentInvestment);
 
   // Calculate the sum of current investments
   const totalInvestment = currentInvestment.reduce(
@@ -21,7 +21,7 @@ const Plans = () => {
         <div className="mb-4">
           <h2 className="text-2xl font-medium">Current Plan</h2>
           <div className="flex items-center justify-between">
-            <p className="font-bold">{currentPlans.join(", ")}</p>
+            <p className="font-bold">{currentPlans.join(", ") || "None"}</p>
             <NavLink
               to="select"
               className="hidden sm:flex items-center gap-1 text-brown font-semibold hover:text-brown-dark">

@@ -1,10 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AdminSideBar from "../layout/AdminSideBar";
-import { Carousel } from "antd"; // Ant Design Carousel
+import { MenuOutlined } from "@ant-design/icons"; // Ant Design Carousel
 import DashBoardTable from "../layout/DashBoardTable";
+import { Navigate } from "react-router-dom";
 
 const AdminDashboard = () => {
   const [sideBarShow, setSideBarShow] = useState(false);
+  
+
+  useEffect(() => {
+    if (!localStorage.getItem("***")) {
+      localStorage.clear();
+      Navigate("/admin/signin");
+    }
+  }, []);
 
   const toggleSideBar = () => {
     setSideBarShow((prev) => !prev);
@@ -23,24 +32,13 @@ const AdminDashboard = () => {
 
       {/* Carousel */}
       {!sideBarShow && (
-        <div className="fixed bottom-4 left-4 w-[90%] sm:w-1/2 z-10">
-          <Carousel autoplay className="sm:!hidden">
-            <div
-              className="carousel-item bg-blue-300 p-4 rounded cursor-pointer"
-              onClick={toggleSideBar}>
-              <h3>Click here to open Sidebar</h3>
-            </div>
-            {/* <div
-              className="carousel-item bg-green-300 p-4 rounded cursor-pointer"
-              onClick={toggleSideBar}>
-              <h3>More Admin Options</h3>
-            </div>
-            <div
-              className="carousel-item bg-yellow-300 p-4 rounded cursor-pointer"
-              onClick={toggleSideBar}>
-              <h3>Manage Settings</h3>
-            </div> */}
-          </Carousel>
+        <div className="fixed top-4 right-4 sm:hidden">
+          <div
+            className=" bg-brown-dark hover:bg-brown transition-all duration-300 ease-in-out p-4 rounded cursor-pointer text-white"
+            onClick={toggleSideBar}>
+            {/* <h3>Click here to open Sidebar</h3>> */}
+            <MenuOutlined />
+          </div>
         </div>
       )}
 

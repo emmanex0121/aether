@@ -44,19 +44,66 @@ const PlansPopUp = ({ onClose, plan, investment, interest, days }) => {
     let walletData = {};
     let updatedBalance;
     if (selectedWallet === "ltc") {
-      updatedBalance = balanceLTC - investmentAmount;
-      walletData = { LTC: updatedBalance };
-      setBalanceLTC(updatedBalance);
+      if (investmentAmount >= balanceLTC) {
+        onNotify(
+          "error",
+          "Failed",
+          "Cannot invest more than available balance."
+        );
+        return;
+      } else {
+        console.log(
+          `Balance: ${balanceLTC} - investmentAmount: ${investmentAmount} = ${
+            balanceLTC - investmentAmount
+          }  `
+        ); // Debug Line
+        updatedBalance = balanceLTC - investmentAmount;
+        walletData = { LTC: updatedBalance };
+        setBalanceLTC(updatedBalance);
+        // return;
+      }
     }
     if (selectedWallet === "btc") {
-      updatedBalance = balanceBTC - investmentAmount;
-      walletData = { BTC: updatedBalance };
-      setBalanceBTC(updatedBalance);
+      if (investmentAmount >= balanceBTC) {
+        onNotify(
+          "error",
+          "Failed",
+          "Cannot invest more than available balance."
+        );
+        return;
+      } else {
+        console.log(
+          `Balance: ${balanceBTC} - investmentAmount: ${investmentAmount} = ${
+            balanceBTC - investmentAmount
+          }  `
+        ); // Debug Line
+
+        updatedBalance = balanceBTC - investmentAmount;
+        walletData = { BTC: updatedBalance };
+        setBalanceBTC(updatedBalance);
+        // return;
+      }
     }
     if (selectedWallet === "usdt") {
-      updatedBalance = balanceUSDT - investmentAmount;
-      walletData = { USDT: updatedBalance };
-      setBalanceUSDT(updatedBalance);
+      if (investmentAmount >= balanceUSDT) {
+        onNotify(
+          "error",
+          "Failed",
+          "Cannot Invest more than available balance."
+        );
+        return;
+      } else {
+        console.log(
+          `Balance: ${balanceUSDT} - investmentAmount: ${investmentAmount} = ${
+            balanceUSDT - investmentAmount
+          }  `
+        ); // Debug Line
+
+        updatedBalance = balanceUSDT - investmentAmount;
+        walletData = { USDT: updatedBalance };
+        setBalanceUSDT(updatedBalance);
+        // return;
+      }
     }
 
     // console.log("wallet data", walletData);

@@ -23,9 +23,9 @@ const AdminSignIn = () => {
   return (
     <div className="min-h-[100svh] flex flex-col gap-y-8 items-center justify-center">
       <h1 className="text-center text-3xl font-bold text-brown">
-        ADMIN SIGN IN
+        WELCOME BACK
       </h1>
-      
+
       <Card className="max-w-[40rem] w-[100%] bg-white shadow-2xl">
         <Form
           // form={form}

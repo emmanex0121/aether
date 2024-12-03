@@ -36,7 +36,7 @@ const SignIn = () => {
       <NavBar />
       <div className="min-h-[90svh] flex flex-col items-center justify-center">
         <h1 className="text-center text-3xl text-brown font-bold my-10">
-          Sign In
+          Welcome Back
         </h1>
         <Card className="max-w-[40rem] w-[100%] shadow-2xl bg-white ">
           <Form

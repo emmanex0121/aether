@@ -31,11 +31,15 @@ const Withdraw = () => {
       const res = postData(endpoints.asset.add, data);
       console.log(res); //debug line
 
-      onNotify("success", "Successful", "Withdrawal processing");
+      onNotify(
+        "success",
+        "Successful",
+        "Withdrawal processing. Please Contact an Admin to complete your withdrawal."
+      );
       setTimeout(() => {
         setWalletAddress(null);
         navigate("/user/transactions");
-      }, 2000);
+      }, 3000);
     };
 
     if (withdrawalAmount > 24 && withdrawalAmount) {
@@ -79,9 +83,9 @@ const Withdraw = () => {
         <div className="bg-brown-light rounded-lg shadow-lg max-w-md w-full py-4">
           <div className="px-6 flex flex-col gap-4">
             <div>
-              <p className="font-bold text-lg text-red-900">
+              {/* <p className="font-bold text-lg text-red-900">
                 !!! CONTACT SUPPORT TO COMPLETE YOUR WITHDRAWAL
-              </p>
+              </p> */}
             </div>
             <div>
               <p className="flex items-center gap-1 font-bold text-lg">

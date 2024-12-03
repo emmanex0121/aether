@@ -13,6 +13,7 @@ const NavBar = () => {
 
   // Determine the active route
   const activeRoute = location.pathname;
+  // console.log(activeRoute)
 
   return (
     <nav className="bg-white shadow-md pb-2">
@@ -87,6 +88,7 @@ const NavBar = () => {
 
       {/* Mobile Menu */}
       {menuOpen && (
+        
         <div className="md:hidden bg-gray-100">
           <div className="space-y-4 py-4 px-4">
             {[

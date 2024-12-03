@@ -100,7 +100,7 @@ const DashboardLayout = () => {
 
   return (
     <div className="min-h-[100vh]">
-      {/* <div className="flex items-center px-2 flex-row w-full h-16 mb-8 bg-white relative">
+      <div className="flex items-center px-2 flex-row w-full h-16 mb-8 bg-white relative">
         <button
           onClick={toggleSidebar}
           className="carousel-btn sm:hidden bg-brown hover:bg-brown-dark text-white px-2 py-1 rounded">
@@ -114,10 +114,10 @@ const DashboardLayout = () => {
             <UserOutlined style={{ fontSize: "24px", color: "#f5f5f5" }} />
           </div>
         </NavLink>
+      </div>
+      {/* <div className="mb-10">
+        <NavBar toggleSideBar={toggleSidebar} />
       </div> */}
-      <div className="mb-10">
-          <NavBar />
-        </div>
       <div className="px-2">
         <div className="min-w-20 w-40 relative z-50">
           <div className="">

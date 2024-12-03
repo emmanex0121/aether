@@ -37,10 +37,10 @@ const SideBar = ({
 
   const handleItemClick = (item) => {
     setSelected(item);
-    setShowSideBar(false);
 
     // Check if the screen width is 640px or less and toggle the sidebar
     if (window.innerWidth <= 640) {
+      setShowSideBar(false);
       toggleSideBar();
     }
   };
@@ -82,7 +82,8 @@ const SideBar = ({
           <span>{balanceTotal} </span> <span>USD</span>
         </div>
         <div className="flex font-medium gap-1">
-          <span>{totalInterest}</span><span> USD (Interest Wallet)</span>
+          <span>{totalInterest}</span>
+          <span> USD (Interest Wallet)</span>
         </div>
         <div className="flex items-center gap-5 mt-6">
           <DepositButton />
