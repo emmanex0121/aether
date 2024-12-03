@@ -9,7 +9,7 @@ import { ArrowDownOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import Line from "../ui/Line";
 import PropTypes from "prop-types";
-import TradingViewWidget from "../ui/TradingViewWidget";
+// import TradingViewWidget from "../ui/TradingViewWidget";
 import TradingViewMarketOverview from "../ui/TradingViewMarketOverview";
 import Footer from "../layout/Footer";
 

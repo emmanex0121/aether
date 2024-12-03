@@ -90,7 +90,6 @@ const GlobalProvider = ({ children }) => {
     try {
       setLoading(true);
       const response = await axiospost(urlEndpoint, data, token);
-      // console.log("POST successful:", response.data);
       setLoading(false);
 
       //   Handle success response if needed
@@ -99,7 +98,7 @@ const GlobalProvider = ({ children }) => {
     } catch (err) {
       setLoading(false);
       setError(err.message);
-      console.error("POST failed:", err.response);
+      // console.error("POST failed:", err.response);
       throw err;
       // return;
     } finally {
@@ -112,7 +111,6 @@ const GlobalProvider = ({ children }) => {
     try {
       setLoading(true);
       const response = await axiosput(urlEndpoint, data, token);
-      // console.log("POST successful:", response.data);
       setLoading(false);
 
       //   Handle success response if needed
@@ -121,7 +119,7 @@ const GlobalProvider = ({ children }) => {
     } catch (err) {
       setLoading(false);
       setError(err.message);
-      console.error("PUT failed:", err.message);
+      // console.error("PUT failed:", err.message);
       throw err;
     } finally {
       setLoading(false);
@@ -133,7 +131,6 @@ const GlobalProvider = ({ children }) => {
     try {
       setLoading(true);
       const response = await axiosget(urlEndpoint, token);
-      // console.log("POST successful:", response.data);
       setLoading(false);
       //   Handle success response if needed
       // onNotify("success", "Successful", "SUCCESSFULLY FETCHED");
@@ -141,7 +138,7 @@ const GlobalProvider = ({ children }) => {
     } catch (err) {
       setLoading(false);
       setError(err.message);
-      console.error("POST failed:", err);
+      // console.error("POST failed:", err);
       throw err;
     } finally {
       setLoading(false);
@@ -185,7 +182,7 @@ const GlobalProvider = ({ children }) => {
         setCurrentPlans(currentPlansArr);
         localStorage.setItem("currentPlans", JSON.stringify(currentPlansArr));
       } catch (err) {
-        console.error(err.message);
+        console.error("Line 185 GlobalContext", err.message);
       }
     };
     fetchPlans();
@@ -194,7 +191,6 @@ const GlobalProvider = ({ children }) => {
   useEffect(() => {
     const fetUserData = async () => {
       const fetchedUserData = await fetchData(endpoints.user.get);
-      console.log("line 197", fetchedUserData);
       setUserData(fetchedUserData);
     };
 
@@ -205,12 +201,14 @@ const GlobalProvider = ({ children }) => {
     const getVerification = async () => {
       try {
         const response = await fetchData(endpoints.verification.get);
-        console.log("Line 165", response.verificationStatus);
         if (response.verificationStatus !== verification) {
           setVerification(response.verificationStatus);
         }
       } catch (error) {
-        console.error("Error fetching verification:", error.message);
+        console.error(
+          "line208 globcont Error fetching verification:",
+          error.message
+        );
       }
     };
 
@@ -218,14 +216,12 @@ const GlobalProvider = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [verification]);
 
-  // console.log("line 162", verification);
   // Read balanceTotal from localStorage
   // Fetch the balance and store it in the context
   useEffect(() => {
     const fetchBalance = async () => {
       try {
         const fetchedData = await fetchData(endpoints.wallet.history);
-        // console.log(fetchedData);
         setData(fetchedData);
         const totalBalance = sumStringsToTwoDecimals(
           fetchedData.USDT,
@@ -242,16 +238,11 @@ const GlobalProvider = ({ children }) => {
         localStorage.setItem("LTC", fetchedData.LTC);
         localStorage.setItem("BTC", fetchedData.BTC);
       } catch (error) {
-        console.log("Error fetching balance:", error);
+        console.error("line241 globcon Error fetching balance:", error.message);
       }
     };
     fetchBalance();
 
-    // // Set interval to fetch balance every 30 seconds
-    // const intervalId = setInterval(fetchBalance, 20000); // 30000 ms = 30 seconds
-
-    // // Cleanup interval on unmount
-    // return () => clearInterval(intervalId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [balanceTotal, balanceUSDT, balanceLTC, balanceBTC]);
 
@@ -269,18 +260,13 @@ const GlobalProvider = ({ children }) => {
         localStorage.setItem("ltcWallet", fetchedAddress.ltcWallet);
         localStorage.setItem("btcWallet", fetchedAddress.btcWallet);
       } catch (err) {
-        console.log(err.message);
+        console.error("line 268 useglobcontext", err.message);
       }
     };
 
     // initial render
     fetchAddress();
 
-    // // Set interval to fetch balance every 30 seconds
-    // const intervalId = setInterval(fetchAddress, 20000); // 30000 ms = 30 seconds
-
-    // // Cleanup interval on unmount
-    // return () => clearInterval(intervalId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Dependency array
 

@@ -12,7 +12,7 @@ const SignIn = () => {
     console.log("Form Values:", values);
     if (values.honeypot) {
       // If honeypot field is filled, it's a bot submission
-      console.log("Bot detected!");
+      // console.log("Bot detected!");
       return;
     }
 
@@ -27,7 +27,7 @@ const SignIn = () => {
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    console.error("Line 30 signin Failed:", errorInfo);
     setloading(false);
   };
 

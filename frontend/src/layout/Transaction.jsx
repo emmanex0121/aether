@@ -81,9 +81,9 @@ const Transaction = () => {
         );
 
         setTransactions(sortedData);
-        fetchedData.map((Data) => {
-          console.log(Data);
-        });
+        // fetchedData.map((Data) => {
+        //   console.log(Data);
+        // });
       } catch (err) {
         console.log(err);
       } finally {
@@ -94,37 +94,7 @@ const Transaction = () => {
     loadTransactions();
   }, []);
 
-  // const transactions = await fetchData(endpoints.asset.history);
-  // console.log(transactions);
-  // const data = [
-  //   {
-  //     key: "1",
-  //     description: "Withdrawal",
-  //     orderNumber: 324558,
-  //     created_At: "12/01/2024",
-  //     orderStatus: "completed",
-  //     price: "50",
-  //     name: "LTC",
-  //   },
-  //   {
-  //     key: "2",
-  //     description: "Deposit",
-  //     orderNumber: 421234,
-  //     created_At: "12/01/2024",
-  //     orderStatus: "pending",
-  //     price: "50",
-  //     name: "LTC",
-  //   },
-  //   {
-  //     key: "3",
-  //     description: "Withdrawal",
-  //     orderNumber: 325667,
-  //     created_At: "12/01/2024",
-  //     orderStatus: "failed",
-  //     price: "50",
-  //     name: "LTC",
-  //   },
-  // ];
+
 
   return (
     <div className="">

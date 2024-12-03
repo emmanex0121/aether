@@ -22,11 +22,6 @@ const Home = () => {
     setActiveKey(key);
   };
 
-  // const customHeader = (title) => (
-  //   <div className="flex justify-between items-center bg-gray-200 p-3 rounded-lg shadow-sm">
-  //     <span className="text-lg font-bold">{title}</span>
-  //   </div>
-  // );
 
   return (
     <div className="pb-4">

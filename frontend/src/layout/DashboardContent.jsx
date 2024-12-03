@@ -26,9 +26,15 @@ ChartJS.register(
 
 const DashboardContent = () => {
   const { balanceTotal } = useContext(BalanceContext);
-  const { userData } = useContext(GlobalContext);
+  const { userData, totalInterest, currentInvestment } =
+    useContext(GlobalContext);
   const { verificationStatus } = userData || {};
 
+  // Calculate the sum of current investments
+  const totalInvestment = currentInvestment.reduce(
+    (acc, curr) => acc + curr,
+    0
+  );
   // Example data for the chart
   const data = {
     labels: ["1AM", "5AM", "9AM", "1PM", "5PM", "9PM"],
@@ -69,17 +75,22 @@ const DashboardContent = () => {
       )}
       <div className="flex flex-wrap items-center my-12 gap-x-[13rem] gap-y-4">
         <div className="custom-bl  flex flex-col">
-          <span className="text-3xl font-bold">Balance </span>
+          <span className="text-xl sm:text-3xl font-bold">Balance </span>
           <span className="text-xl">${balanceTotal}</span>
         </div>
         <div className="custom-bl flex flex-col">
-          <span className="text-3xl font-bold">24hr Change / Investment</span>
-          <span className="text-xl">$5,000 (+$400.34)</span>
+          <span className="text-xl sm:text-3xl font-bold">
+            24hr Change / Investment
+          </span>
+          <span className="text-xl">
+            {totalInvestment.toFixed(2)} ({totalInterest.toFixed(2)})
+          </span>
         </div>
       </div>
       <div>
-        <span className="custom-bl text-3xl font-bold">24 hr Change</span>
-        {/* <div>Chart</div> */}
+        <span className="custom-bl text-xl sm:text-3xl font-bold">
+          24 hr Change
+        </span>
         <div className="mt-12">
           <Line data={data} options={options} />
         </div>

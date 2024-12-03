@@ -23,7 +23,6 @@ const PlansPopUp = ({ onClose, plan, investment, interest, days }) => {
   const { putData, postData, currentPlans } = useContext(GlobalContext);
 
   const handleSubmit = () => {
-    console.log(currentPlans);
     // Check if the user already has a plan of the selected wallet type
     if (currentPlans.includes(plan)) {
       // If the user already has the same wallet type, notify them
@@ -52,11 +51,6 @@ const PlansPopUp = ({ onClose, plan, investment, interest, days }) => {
         );
         return;
       } else {
-        console.log(
-          `Balance: ${balanceLTC} - investmentAmount: ${investmentAmount} = ${
-            balanceLTC - investmentAmount
-          }  `
-        ); // Debug Line
         updatedBalance = balanceLTC - investmentAmount;
         walletData = { LTC: updatedBalance };
         setBalanceLTC(updatedBalance);
@@ -72,12 +66,6 @@ const PlansPopUp = ({ onClose, plan, investment, interest, days }) => {
         );
         return;
       } else {
-        console.log(
-          `Balance: ${balanceBTC} - investmentAmount: ${investmentAmount} = ${
-            balanceBTC - investmentAmount
-          }  `
-        ); // Debug Line
-
         updatedBalance = balanceBTC - investmentAmount;
         walletData = { BTC: updatedBalance };
         setBalanceBTC(updatedBalance);
@@ -93,20 +81,12 @@ const PlansPopUp = ({ onClose, plan, investment, interest, days }) => {
         );
         return;
       } else {
-        console.log(
-          `Balance: ${balanceUSDT} - investmentAmount: ${investmentAmount} = ${
-            balanceUSDT - investmentAmount
-          }  `
-        ); // Debug Line
-
         updatedBalance = balanceUSDT - investmentAmount;
         walletData = { USDT: updatedBalance };
         setBalanceUSDT(updatedBalance);
         // return;
       }
     }
-
-    // console.log("wallet data", walletData);
 
     const sendRequest = async () => {
       try {
@@ -115,14 +95,10 @@ const PlansPopUp = ({ onClose, plan, investment, interest, days }) => {
           selectedPlan: plan,
         };
 
-        const responseWallet = await putData(
-          endpoints.wallet.update,
-          walletData
-        );
-        const responsePlan = await postData(endpoints.plans.add, planData);
-        console.log(responseWallet, responsePlan);
+        await putData(endpoints.wallet.update, walletData);
+        await postData(endpoints.plans.add, planData);
       } catch (error) {
-        console.error(error.message);
+        console.error("Line 101 planspopup: ", error.message);
         onNotify(
           "error",
           "Failed",
@@ -172,7 +148,6 @@ const PlansPopUp = ({ onClose, plan, investment, interest, days }) => {
   };
 
   const onChange = (value) => {
-    console.log(`selected ${value}`);
     setSelectedWallet(value);
   };
 

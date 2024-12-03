@@ -41,7 +41,7 @@ const ResponsiveTable = () => {
     ["Yes", "Yes", "Yes"],
     ["Yes", "Yes", "Yes"],
     ["Allowed", "Allowed", "Allowed"],
-    ["$250 - $5,000 USD", "$5,000 - $10,000 USD", "$50,000 USD +"],
+    ["$250 - $1,000 USD", "$5,000 - $10,000 USD", "$10k - $50k USD"],
     ["Trade", "Trade", "Trade"],
   ];
 

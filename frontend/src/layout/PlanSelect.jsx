@@ -2,8 +2,7 @@
 import { Card } from "antd";
 import PlansPopUp from "../ui/PlansPopUp";
 import { useState } from "react";
-// import { GlobalContext } from "../contexts/useGlobalContext";
-// import { endpoints } from "../api/endpoints";
+
 
 const PlanSelect = () => {
   const [isPopupVisible, setPopupVisible] = useState(false);

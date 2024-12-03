@@ -18,21 +18,19 @@ import { GlobalContext } from "../contexts/useGlobalContext";
 // import { useEffect } from "react";
 const SideBar = ({
   balanceTotal,
-  // currentPath,
   toggleSideBar,
   sideBarShow,
   setShowSideBar,
-  // selected,
+
   setSelected,
 }) => {
   const location = useLocation();
   const [currentPath, setCurrentPath] = useState(location.pathname);
   const { totalInterest } = useContext(GlobalContext);
-  // console.log(totalInterest);
 
   useEffect(() => {
     if (currentPath !== location.pathname) setCurrentPath(location.pathname);
-    console.log(currentPath);
+    // console.log(currentPath);
   }, [location.pathname, currentPath, setCurrentPath, setSelected]);
 
   const handleItemClick = (item) => {
@@ -94,7 +92,6 @@ const SideBar = ({
         <NavLink
           to="dashboard"
           className={`sidebar-item ${
-            // selected === "DashboardContent" ||
             currentPath.startsWith("/user/dashboard") ? "active-item" : ""
           }`}
           onClick={() => handleItemClick("DashboardContent")}>
@@ -116,7 +113,6 @@ const SideBar = ({
         <NavLink
           to="transactions"
           className={`sidebar-item ${
-            // selected === "Transactions" ||
             currentPath.startsWith("/user/transactions") ? "active-item" : ""
           }`}
           onClick={() => handleItemClick("Transactions")}>
@@ -127,7 +123,6 @@ const SideBar = ({
         <NavLink
           to="wallet"
           className={`sidebar-item ${
-            // selected === "Wallet" ||
             currentPath.startsWith("/user/wallet") ? "active-item" : ""
           }`}
           onClick={() => handleItemClick("Wallet")}>
@@ -138,7 +133,6 @@ const SideBar = ({
         <NavLink
           to="verification"
           className={`sidebar-item ${
-            // selected === "Verification" ||
             currentPath.startsWith("/user/verification") ? "active-item" : ""
           }`}
           onClick={() => handleItemClick("Verification")}>
@@ -149,7 +143,6 @@ const SideBar = ({
         <NavLink
           to="profile"
           className={`sidebar-item ${
-            // selected === "Profile" ||
             currentPath.startsWith("/user/profile") ? "active-item" : ""
           }`}
           onClick={() => handleItemClick("Profile")}>
@@ -160,7 +153,6 @@ const SideBar = ({
         <NavLink
           to="chat"
           className={`sidebar-item ${
-            // selected === "Chat" ||
             currentPath.startsWith("/user/chat") ? "active-item" : ""
           }`}
           onClick={() => handleItemClick("Chat")}>

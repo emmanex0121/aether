@@ -36,9 +36,8 @@ const DashBoardTable = () => {
       try {
         const fetchUsers = await fetchData(endpoints.admin.getUsers);
         setFetchedUsers(fetchUsers);
-        // console.log(fetchUsers);
       } catch (error) {
-        console.error(error.message);
+        console.error("Line 40 Dashtable", error.message);
       }
     };
     fetchAllUsers();
@@ -50,13 +49,9 @@ const DashBoardTable = () => {
     const fetchAllWallets = async () => {
       try {
         const fetchedWallets = await fetchData(endpoints.admin.getAddresses);
-        console.log("Line 45 dashtable", fetchedWallets);
         setWallets(fetchedWallets);
-        // setWalletBtc(fetchedWallets.btcWallet);
-        // setWalletLtc(fetchedWallets.ltcWallet);
-        // setWalletUsdt(fetchedWallets.usdtWallet);
       } catch (err) {
-        console.log(err.message);
+        console.err("Line 55 DashTable", err.message);
       }
     };
     fetchAllWallets();
@@ -76,7 +71,6 @@ const DashBoardTable = () => {
 
   // Handle option selection
   const handleOptionSelect = async (option) => {
-    console.log(selectedUser);
     setChat_Id("");
     setPlans({});
     setTransactions([]);
@@ -95,13 +89,7 @@ const DashBoardTable = () => {
       setChat_Id("");
       fetchChatId(selectedUser._id);
     }
-
-    console.log(
-      `Selected option for user ${selectedUser.firstName}: ${option}`
-    );
   };
-
-  // console.log(selectedOption);
 
   // Fetch transactions for the selected user
   const fetchTransactions = async (userId) => {
@@ -111,9 +99,8 @@ const DashBoardTable = () => {
         userId,
       });
       setTransactions(response);
-      console.log(response);
     } catch (error) {
-      console.log(error.message);
+      console.error("Line 106 DashTable", error.message);
       message.error("Failed to load transactions");
     } finally {
       setLoading(false);
@@ -125,9 +112,8 @@ const DashBoardTable = () => {
     try {
       const fetchedPlans = await postData(endpoints.admin.getPlans, { userId });
       setPlans(fetchedPlans);
-      console.log(fetchedPlans);
     } catch (error) {
-      console.log(error.message);
+      console.error("Line 116 Dash table", error.message);
     }
   };
 
@@ -137,14 +123,13 @@ const DashBoardTable = () => {
       const fetchedData = await postData(endpoints.admin.getChatId, {
         userId,
       });
-      console.log("Line 95 admindashtable", fetchedData);
       if (!fetchedData) {
         setChat_Id("None");
       }
       const fetchedChatId = fetchedData.chatId;
       setChat_Id(fetchedChatId);
     } catch (err) {
-      console.log("Line 103", err.message);
+      console.err("Line 132 Dash Table", err.message);
     }
   };
 
@@ -155,11 +140,10 @@ const DashBoardTable = () => {
         userId,
         chatId,
       });
-      console.log("Line 123 dash table", newChatData);
       setChat_Id(newChatData.chatId);
       message.success("Chat Id Updated Succesfully, Please Refresh.");
     } catch (err) {
-      console.log(err.message);
+      console.error("Line 146 Dash Table", err.message);
       message.error("Unable To update Chat ID");
     }
   };
@@ -192,7 +176,7 @@ const DashBoardTable = () => {
 
       message.success({ content: "Transaction updated successfully!", key });
     } catch (error) {
-      console.error(error.message);
+      console.error("Line 179 Dash table", error.message);
       message.error({ content: "Failed to update transaction.", key });
     }
   };
@@ -214,7 +198,7 @@ const DashBoardTable = () => {
 
       message.success({ content: "Verification status updated!", key });
     } catch (error) {
-      console.error(error.message);
+      console.error("Line 201 Dash Table", error.message);
       message.error({ content: "Failed to update verification status.", key });
     }
   };
@@ -235,14 +219,13 @@ const DashBoardTable = () => {
         endpoints.admin.updateAddresses,
         data
       );
-      console.log(updatedWallet);
       setWallets(updatedWallet);
       setWalletBtc("");
       setWalletLtc("");
       setWalletUsdt("");
       message.success("Wallet Address updated Succesfully.");
     } catch (err) {
-      console.log(err.message);
+      console.err("Line 228 Dash Table", err.message);
       message.error(err.message);
     }
   };

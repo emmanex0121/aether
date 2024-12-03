@@ -1,5 +1,5 @@
 import useNotification from "../customHooks/useNotification";
-import { Select, InputNumber, Input } from "antd";
+import { Select, InputNumber, Input, message } from "antd";
 import { BalanceContext, GlobalContext } from "../contexts/useGlobalContext";
 
 import { useNavigate } from "react-router-dom";
@@ -19,7 +19,7 @@ const Withdraw = () => {
   };
 
   const handleSubmit = () => {
-    const onSucess = () => {
+    const onSucess = async () => {
       const data = {
         name: selectedWallet,
         description: "withdrawal",
@@ -28,18 +28,22 @@ const Withdraw = () => {
         orderStatus: "pending",
         walletAddress: walletAddress,
       };
-      const res = postData(endpoints.asset.add, data);
-      console.log(res); //debug line
+      try {
+        await postData(endpoints.asset.add, data);
 
-      onNotify(
-        "success",
-        "Successful",
-        "Withdrawal processing. Please Contact an Admin to complete your withdrawal."
-      );
-      setTimeout(() => {
-        setWalletAddress(null);
-        navigate("/user/transactions");
-      }, 3000);
+        onNotify(
+          "success",
+          "Successful",
+          "Withdrawal processing. Please Contact an Admin to complete your withdrawal."
+        );
+        setTimeout(() => {
+          setWalletAddress(null);
+          navigate("/user/transactions");
+        }, 3000);
+      } catch (err) {
+        console.error("Line 44 Withdraw", err.message);
+        message.error("Unable to process", err.message);
+      }
     };
 
     if (withdrawalAmount > 24 && withdrawalAmount) {
@@ -73,7 +77,6 @@ const Withdraw = () => {
 
   const handleWalletChange = (value) => {
     setSelectedWallet(value); // Update state with selected wallet
-    console.log("Selected Wallet:", value); // Optional: Debugging log
   };
 
   return (

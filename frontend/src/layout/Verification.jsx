@@ -9,7 +9,6 @@ import useNotification from "../customHooks/useNotification";
 const Verification = () => {
   const firstName = localStorage.getItem("firstName");
   const lastName = localStorage.getItem("lastName");
-  // const verificationStatus = localStorage.getItem("verificationStatus");
 
   // State to hold the uploaded image URLs
   const [imageUrls, setImageUrls] = useState([]);
@@ -20,7 +19,6 @@ const Verification = () => {
   const handleImageUpload = (urls) => {
     setImageUrls((prevUrls) => [...prevUrls, ...urls]);
   };
-  console.log("debug line 18 verification", imageUrls);
 
   const handleSubmit = async () => {
     const dataToSubmit = {
@@ -33,7 +31,6 @@ const Verification = () => {
     // API call to submit data
     await postData(endpoints.verification.start, dataToSubmit);
     onNotify("success", "Succesful", "Succesfully started verification");
-    console.log("Submitting verification data:", dataToSubmit);
     setVerification("pending");
     localStorage.setItem("verificationStatus", "pending");
   };

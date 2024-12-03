@@ -1,5 +1,5 @@
 import useNotification from "../customHooks/useNotification";
-import { Select, InputNumber } from "antd";
+import { Select, InputNumber, message } from "antd";
 import {
   BalanceContext,
   AddressContext,
@@ -9,10 +9,6 @@ import { useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import CopyText from "../ui/CopyText";
 import { endpoints } from "../api/endpoints";
-
-// const onChange = (value) => {
-//   console.log(`selected ${value}`);
-// };
 
 const Deposit = () => {
   const { onNotify } = useNotification();
@@ -29,7 +25,7 @@ const Deposit = () => {
   };
 
   const handleSubmit = () => {
-    const onSucessShowWallet = () => {
+    const onSucessShowWallet = async () => {
       setIsSubmitted(true);
 
       if (isSubmitted) {
@@ -40,13 +36,17 @@ const Deposit = () => {
           orderNumber: generateRandomUUID(),
           orderStatus: "pending",
         };
-        const res = postData(endpoints.asset.add, data);
-        console.log(res); //debug line
-        onNotify("success", "Successful", "Deposit processing");
-        setTimeout(() => {
-          setIsSubmitted(false);
-          navigate("/user/transactions");
-        }, 2000);
+        try {
+          await postData(endpoints.asset.add, data);
+          onNotify("success", "Successful", "Deposit processing");
+          setTimeout(() => {
+            setIsSubmitted(false);
+            navigate("/user/transactions");
+          }, 2000);
+        } catch (error) {
+          console.error("Line 51 Deposit", error.message);
+          message.error("Deposit Failed: ", error.message);
+        }
       }
     };
 
@@ -61,7 +61,6 @@ const Deposit = () => {
   const handleWalletChange = (value) => {
     setSelectedWallet(value); // Update state with selected wallet
     setIsSubmitted(false);
-    console.log("Selected Wallet:", value); // Optional: Debugging log
   };
 
   const renderWalletAddress = () => {
@@ -130,7 +129,7 @@ const Deposit = () => {
                 Select Wallet <span className="text-red-700 text-xl">*</span>
               </p>
               <Select
-              className=" hover:!border-brown"
+                className=" hover:!border-brown"
                 style={{
                   width: "100%",
                 }}

@@ -6,7 +6,6 @@ import { useContext } from "react";
 const Plans = () => {
   const { currentPlans, totalInterest, currentInvestment } =
     useContext(GlobalContext);
-  // console.log(currentInvestment);
 
   // Calculate the sum of current investments
   const totalInvestment = currentInvestment.reduce(

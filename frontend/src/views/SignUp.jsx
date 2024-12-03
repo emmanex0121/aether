@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Form, Input, Button, Card } from "antd";
 // import useNotification from "../customHooks/useNotification";
 import axios from "axios";
+
 import { useAuth } from "../customHooks/useCustomAuth";
 import NavBar from "../layout/NavBar";
 import Line from "../ui/Line";
@@ -13,30 +14,35 @@ const SignUp = () => {
   const [country, setCountry] = useState("");
   const [loading, setloading] = useState(false);
   const { onAuth } = useAuth();
-  // const { onNotify } = useNotification();
+  // console.log(fetchData);
 
   useEffect(() => {
     const fetchCountryFromIP = async () => {
       try {
+        console.log("Testing");
+        // const response = await fetchData(endpoints.getCountry);
         const response = await axios.get(
-          `https://ipinfo.io/json?token=ff55629580ecf2`
+          "https://get.geojs.io/v1/ip/country.json"
         );
-        setCountry(response.data.country); // Set country based on response
-        console.log(country); // Debug Line
-        form.setFieldsValue({ country: response.data.country }); // Prefill country field in form
-      } catch (error) {
-        console.error("Error fetching country:", error);
+
+        // console.log("response", response.data?.name);
+        setCountry(response.data?.name);
+        form.setFieldsValue({ country: country });
+      } catch (err) {
+        console.error("Line 323 signup: ", err.message);
       }
     };
     fetchCountryFromIP();
-  }, [form]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form, country]);
 
   const onFinish = (values) => {
-    console.log(country);
+    // console.log(country);
     console.log("Form Values:", values);
+
     if (values.honeypot) {
-      // If honeypot field is filled, it's a bot submission
-      console.log("Bot detected!");
+      // If honeypot field is filled, it's a bot submission;
+      // console.log("Bot detected!");
       return;
     }
     setloading(true);
@@ -47,7 +53,7 @@ const SignUp = () => {
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    console.log("Line 50 signup Failed:", errorInfo);
     setloading(false);
   };
 
@@ -195,21 +201,12 @@ const SignUp = () => {
               </Form.Item>
             </div>
 
-            <Form.Item
-              label="Country"
-              name="country"
-              rules={[
-                { required: true, message: "Please select your country" },
-              ]}>
+            <Form.Item label="Country" name="country">
               <Input
                 className="input-style"
                 type="text"
-                // disabled
-                variant="filled"
-                readOnly
+                disabled
                 minLength={2}
-                // value="HELLO"
-                // defaultValue="Hello"
               />
             </Form.Item>
 

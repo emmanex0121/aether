@@ -13,7 +13,6 @@ const NavBar = () => {
 
   // Determine the active route
   const activeRoute = location.pathname;
-  // console.log(activeRoute)
 
   return (
     <nav className="bg-white shadow-md pb-2">

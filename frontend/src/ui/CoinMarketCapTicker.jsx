@@ -7,7 +7,7 @@ const CoinMarketCapTicker = () => {
     const fetchCryptoData = async () => {
       try {
         const response = await fetch(
-          "https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT", // Example: Fetch Bitcoin data
+          "https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT" // Example: Fetch Bitcoin data
         );
 
         if (!response.ok) {
@@ -18,7 +18,7 @@ const CoinMarketCapTicker = () => {
         // Set the data directly or you can process it if necessary
         setAssets([data]); // If you want to display only one asset, for example, Bitcoin
       } catch (error) {
-        console.error("Error fetching Binance data:", error);
+        console.error("Line 21 cmcTicker Error fetching Binance data:", error);
       }
     };
 

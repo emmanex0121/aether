@@ -14,8 +14,6 @@ const useAuth = () => {
   const onAuth = async (request) => {
     console.log("Form values", request);
 
-    // setloading(true);
-
     // Define the endpoint based on request parameters
     let endpoint;
     // Check if the current route is not "/admin/signin"
@@ -30,11 +28,9 @@ const useAuth = () => {
       // If the route is "/admin/signin", set admin-specific endpoint
       endpoint = endpoints.auth.adminsignin;
     }
-    console.log(endpoint); // debugging line
 
     try {
       const response = await axiosInstance.post(endpoint, request);
-      console.log(response.data);
 
       if (response.data?.responseCode === "00") {
         // console.log(response.data?.response);
@@ -53,7 +49,6 @@ const useAuth = () => {
           "verificationStatus",
           response.data?.data?.verificationStatus
         );
-        console.log(response.data?.data.verificationStatus);
 
         // upon completion
         setloading(false);

@@ -7,7 +7,6 @@ const AdminSignIn = () => {
   const { onAuth } = useAuth();
 
   const onFinish = (values) => {
-    console.log("Form Values:", values);
     setloading(true);
     // onNotify("success", "Successful", "User addedd");
 
@@ -16,7 +15,7 @@ const AdminSignIn = () => {
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    console.error("Line 18 admin signin Failed:", errorInfo);
     setloading(false);
   };
 

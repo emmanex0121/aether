@@ -11,7 +11,7 @@ const CopyText = ({ text }) => {
       setTooltipText("Copied!");
       setTimeout(() => setTooltipText("Click to copy"), 2000); // Reset tooltip after 2 seconds
     } catch (error) {
-      console.error(error);
+      console.error("Line 14 CopyText", error);
       setTooltipText("Failed to copy");
     }
   };

@@ -25,7 +25,7 @@ const ChatComponent = () => {
         setMessages((prev) => [...prev, ...newMessages]);
       }
     } catch (err) {
-      console.error("Error fetching messages:", err);
+      console.error("Line 28 chatComponent Error fetching messages:", err);
     }
   };
 
@@ -43,6 +43,7 @@ const ChatComponent = () => {
     // fetchMessages();
     const interval = setInterval(fetchMessages, 10000);
     return () => clearInterval(interval); // Clean up on component unmount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = async (e) => {
@@ -50,10 +51,9 @@ const ChatComponent = () => {
     setLoading(true);
 
     try {
-      const messageResponse = await postData(endpoints.message.send, {
+      await postData(endpoints.message.send, {
         message: messageText,
       });
-      console.log(messageResponse);
       setSendStatus("✔");
 
       setMessages((prevMessages) => [
@@ -76,15 +76,15 @@ const ChatComponent = () => {
     const loadChatHistory = async () => {
       try {
         const chat = await fetchData(endpoints.message.getHistory);
-        console.log("line 72", chat);
         if (chat?.messages) {
           setMessages(chat.messages);
         }
       } catch (err) {
-        console.error("Error loading chat history:", err);
+        console.error("Line 82 chatComponent Error loading chat history:", err);
       }
     };
     loadChatHistory();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleCloseChat = async () => {
@@ -92,12 +92,10 @@ const ChatComponent = () => {
       setIsModalOpen(true);
       // message.success("Chat marked as closed.");
     } catch (err) {
-      console.error("Error closing chat:", err);
+      console.error("Line 93 chatComponent Error closing chat:", err);
       message.error("Failed to close chat.");
     }
   };
-
-  // console.log(messages)
 
   return (
     <div className="max-w-lg mx-auto p-4 border border-white rounded-lg bg-white shadow-md relative">
@@ -153,6 +151,7 @@ const ChatComponent = () => {
           postData={postData}
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
+          setMessages={setMessages}
           endpoint={endpoints.message.close}
           // submitMessage={submitMessage}
           // setSubmitMessage={setSubmitMessage}

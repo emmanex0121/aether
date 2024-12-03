@@ -15,6 +15,7 @@ export const endpoints = {
     update: "wallet/update",
   },
   address: "address",
+  getCountry: "country",
   plans: {
     add: "user/plans/add",
     history: "user/plans/",

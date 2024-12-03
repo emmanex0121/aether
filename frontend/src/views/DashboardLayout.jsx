@@ -2,7 +2,7 @@
 import { Outlet, useLocation, NavLink } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import SideBar from "../layout/SideBar";
-import NavBar from "../layout/NavBar";
+// import NavBar from "../layout/NavBar";
 import {
   UserOutlined,
   MessageOutlined,
@@ -22,32 +22,6 @@ const DashboardLayout = () => {
   const [isChatVisible, setIsChatVisible] = useState(false); // State to toggle chat visibility
   const { balanceTotal } = useContext(BalanceContext);
 
-  // const balanceTotal = localStorage.getItem("balanceTotal");
-  // useEffect(() => {
-  //   const fetchBalance = async () => {
-  //     try {
-  //       if (!balanceTotal) {
-  //         const fetchedData = await fetchData(endpoints.wallet.history);
-  //         console.log(fetchedData.data);
-  //         setData(fetchedData);
-  //         const balanceTotal = sumStringsToTwoDecimals(
-  //           fetchedData.USDT,
-  //           fetchedData.LTC,
-  //           fetchedData.BTC
-  //         );
-  //         localStorage.setItem("balanceTotal", balanceTotal);
-  //         localStorage.setItem("USDT", fetchedData.USDT);
-  //         localStorage.setItem("LTC", fetchedData.LTC);
-  //         localStorage.setItem("BTC", fetchedData.BTC);
-  //       }
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   fetchBalance();
-  // }, []);
-
-  // const balances =
   useEffect(
     () => {
       // Map the current path to a sidebar item (e.g., "/plans" or any nested path like "/plans/plan1" will set "Plans")
@@ -61,7 +35,6 @@ const DashboardLayout = () => {
         "/chat": "Chat",
         "/logout": "Logout",
       };
-      console.log(location.pathname);
       const matchedPath = Object.keys(pathMap).find((path) =>
         location.pathname.startsWith(path)
       );
@@ -78,12 +51,8 @@ const DashboardLayout = () => {
     // Save the selected tab to localStorage whenever it changes
     if (selected) {
       localStorage.setItem("selectedTab", selected);
-      // console.log("Updated localStorage:", localStorage.getItem("selectedTab")); // Debug line
     }
   }, [selected]);
-
-  // console.log("selec", selected); //debug line
-  // console.log(localStorage.getItem("selectedTab")); // debug line
 
   const toggleSidebar = () => {
     if (!sideBarShow) {
@@ -126,9 +95,7 @@ const DashboardLayout = () => {
               toggleSideBar={toggleSidebar}
               sideBarShow={sideBarShow}
               setShowSideBar={setShowSideBar}
-              // selected={selected}
               setSelected={setSelected}
-              // currentPath={location.pathname}
             />
           </div>
         </div>

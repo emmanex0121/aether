@@ -14,7 +14,10 @@ const CryptoTicker = () => {
         // Duplicate the array for seamless looping
         setAssets([...data, ...data]);
       } catch (error) {
-        console.error("Error fetching crypto data:", error);
+        console.error(
+          "Line 17 Crypto Ticker Error fetching crypto data:",
+          error
+        );
       }
     };
 

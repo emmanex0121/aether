@@ -6,18 +6,15 @@ const PopConfirmModal = ({
   setIsModalOpen,
   postData,
   endpoint,
-  //   submitMessage,
-  //   setSubmitMessage,
+  setMessages,
 }) => {
   const handleOk = async () => {
     try {
-      const fetchedData = await postData(endpoint, {});
-      console.log(fetchedData);
-      //   setSubmitMessage("Chat ended succefully.");
+      await postData(endpoint, {});
+      setMessages([]);
       message.success("Chat ended succefully.");
     } catch (err) {
-      console.error(err.message);
-      //   setSubmitMessage("Chat close failed.");
+      console.error("Line 17 popconfirm: ", err.message);
       message.error("Chat close failed.");
     } finally {
       setIsModalOpen(false);
@@ -45,8 +42,7 @@ PopConfirmModal.propTypes = {
   setIsModalOpen: PropTypes.node,
   postData: PropTypes.func,
   endpoint: PropTypes.string,
-  //   submitMessage: PropTypes.string,
-  //   setSubmitMessage: PropTypes.node,
+  setMessages: PropTypes.array,
 };
 
 export default PopConfirmModal;
