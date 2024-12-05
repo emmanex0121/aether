@@ -22,6 +22,10 @@ const PlansPopUp = ({ onClose, plan, investment, interest, days }) => {
   } = useContext(BalanceContext);
   const { putData, postData, currentPlans } = useContext(GlobalContext);
 
+  const generateRandomUUID = () => {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+  };
+
   const handleSubmit = () => {
     // Check if the user already has a plan of the selected wallet type
     if (currentPlans.includes(plan)) {
@@ -41,6 +45,7 @@ const PlansPopUp = ({ onClose, plan, investment, interest, days }) => {
       }, 2000);
     };
     let walletData = {};
+    let withdrawalData = {};
     let updatedBalance;
     if (selectedWallet === "ltc") {
       if (investmentAmount >= balanceLTC) {
@@ -53,6 +58,13 @@ const PlansPopUp = ({ onClose, plan, investment, interest, days }) => {
       } else {
         updatedBalance = balanceLTC - investmentAmount;
         walletData = { LTC: updatedBalance };
+        withdrawalData = {
+          name: "USDT",
+          description: "Inv. Dep.",
+          price: investmentAmount,
+          orderNumber: generateRandomUUID(),
+          orderStatus: "completed",
+        };
         setBalanceLTC(updatedBalance);
         // return;
       }
@@ -68,6 +80,13 @@ const PlansPopUp = ({ onClose, plan, investment, interest, days }) => {
       } else {
         updatedBalance = balanceBTC - investmentAmount;
         walletData = { BTC: updatedBalance };
+        withdrawalData = {
+          name: "BTC",
+          description: "Inv. Dep.",
+          price: investmentAmount,
+          orderNumber: generateRandomUUID(),
+          orderStatus: "completed",
+        };
         setBalanceBTC(updatedBalance);
         // return;
       }
@@ -83,6 +102,13 @@ const PlansPopUp = ({ onClose, plan, investment, interest, days }) => {
       } else {
         updatedBalance = balanceUSDT - investmentAmount;
         walletData = { USDT: updatedBalance };
+        withdrawalData = {
+          name: "USDT",
+          description: "Inv. Dep.",
+          price: investmentAmount,
+          orderNumber: generateRandomUUID(),
+          orderStatus: "completed",
+        };
         setBalanceUSDT(updatedBalance);
         // return;
       }
@@ -97,6 +123,7 @@ const PlansPopUp = ({ onClose, plan, investment, interest, days }) => {
 
         await putData(endpoints.wallet.update, walletData);
         await postData(endpoints.plans.add, planData);
+        await postData(endpoints.asset.add, withdrawalData);
       } catch (error) {
         console.error("Line 101 planspopup: ", error.message);
         onNotify(

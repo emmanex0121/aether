@@ -232,6 +232,7 @@ const GlobalProvider = ({ children }) => {
         setBalanceUSDT(fetchedData.USDT); // Update balance state
         setBalanceLTC(fetchedData.LTC); // Update balance state
         setBalanceBTC(fetchedData.BTC); // Update balance state
+        console.log("235...", fetchedData.USDT)
 
         localStorage.setItem("balanceTotal", totalBalance);
         localStorage.setItem("USDT", fetchedData.USDT);
