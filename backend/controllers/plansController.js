@@ -7,7 +7,9 @@ import { apiResponseCode } from "../helper.js";
 const updatePlansDaily = async () => {
   console.log("Cron job triggered: ", new Date()); // Log when the cron job is triggered
   try {
-    const plans = await Plans.find().populate("user"); // Ensure user data is available
+    const plans = await Plans.find(); // Ensure user data is available
+
+    console.log("Plans fetched:", plans.length);
     if (!plans.length) {
       console.error("No users have plans");
       return;
@@ -17,14 +19,12 @@ const updatePlansDaily = async () => {
       const { basic, silver, gold } = plan;
 
       // updat plans based on the logic un updatPlans
-      await Promise.all([
-        processPlan(plan, basic, 7, plan.user),
-        processPlan(plan, silver, 3, plan.user),
-        processPlan(plan, gold, 7, plan.user),
-      ]);
-
+      // console.log(silver);
+      await processPlan(plan, basic, 7, plan.user);
+      await processPlan(plan, silver, 3, plan.user);
+      await processPlan(plan, gold, 7, plan.user);
       // Save updated plan
-      await plan.save();
+      // await plan.save();
     }
   } catch (err) {
     console.error("Line 31 plansController", err.message);
@@ -86,8 +86,10 @@ const addplan = async (req, res) => {
       data: null,
     });
   }
+
   let plan = await Plans.findOne({ user: req.user });
   if (!plan) {
+    // if no plan does not exist for user create a new plan of the selected one
     plan = new Plans({
       [selectedPlan]: { initialValue: initialValue },
       user: req.user,
@@ -99,6 +101,9 @@ const addplan = async (req, res) => {
       data: plan,
     });
   }
+
+  // if plans exist for user, and another type of plan was provided.
+  // update that particular type of plan initial value.
   plan[selectedPlan].initialValue = initialValue;
   await plan.save();
 

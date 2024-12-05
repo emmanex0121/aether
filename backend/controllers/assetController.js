@@ -5,8 +5,8 @@ import { sumStringsToTwoDecimals } from "../utils/sumStringsToTwoDecimals.js";
 import { subtractStringsToTwoDecimals } from "../utils/subtractStringsToTwoDecimals.js";
 import Asset from "../models/Asset.js";
 import Wallet from "../models/Wallet.js";
-// import ConfirmedAssets from "../models/ConfirmedAssets.js";
 import mongoose from "mongoose";
+import { customToUpperCase } from "../utils/customToUpperCase.js";
 
 // add a new asset
 const addUpdateAsset = async (req, res) => {
@@ -39,7 +39,8 @@ const addUpdateAsset = async (req, res) => {
     }
 
     newAsset = new Asset({
-      name, // "LTC", "BTC", or "USDT"
+      // name: customToUpperCase(name), // "LTC", "BTC", or "USDT"
+      name: name.toUpperCase(),
       description,
       price,
       volume,
